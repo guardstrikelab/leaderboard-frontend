@@ -1,0 +1,240 @@
+{
+  "id": "4279683",
+  "name": "leaderboard",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "38653895",
+      "name": "kaishi",
+      "font_class": "kaishi",
+      "unicode": "e6ee",
+      "unicode_decimal": 59118
+    },
+    {
+      "icon_id": "38653894",
+      "name": "yunxing",
+      "font_class": "yunxing",
+      "unicode": "e6ef",
+      "unicode_decimal": 59119
+    },
+    {
+      "icon_id": "38487965",
+      "name": "rili",
+      "font_class": "rili",
+      "unicode": "e6eb",
+      "unicode_decimal": 59115
+    },
+    {
+      "icon_id": "38487964",
+      "name": "shouqi",
+      "font_class": "shouqi",
+      "unicode": "e6ec",
+      "unicode_decimal": 59116
+    },
+    {
+      "icon_id": "38487963",
+      "name": "zhankai",
+      "font_class": "zhankai",
+      "unicode": "e6ed",
+      "unicode_decimal": 59117
+    },
+    {
+      "icon_id": "38487954",
+      "name": "Hosted Challenge",
+      "font_class": "a-HostedChallenge",
+      "unicode": "e6e7",
+      "unicode_decimal": 59111
+    },
+    {
+      "icon_id": "38487953",
+      "name": "Delete",
+      "font_class": "Delete",
+      "unicode": "e6e8",
+      "unicode_decimal": 59112
+    },
+    {
+      "icon_id": "38487952",
+      "name": "Create Phases",
+      "font_class": "a-CreatePhases",
+      "unicode": "e6e9",
+      "unicode_decimal": 59113
+    },
+    {
+      "icon_id": "38487951",
+      "name": "Search",
+      "font_class": "Search",
+      "unicode": "e6ea",
+      "unicode_decimal": 59114
+    },
+    {
+      "icon_id": "38119492",
+      "name": "Cancel",
+      "font_class": "Cancel",
+      "unicode": "e6e4",
+      "unicode_decimal": 59108
+    },
+    {
+      "icon_id": "38119491",
+      "name": "copy",
+      "font_class": "copy",
+      "unicode": "e6e5",
+      "unicode_decimal": 59109
+    },
+    {
+      "icon_id": "38119490",
+      "name": "load",
+      "font_class": "load",
+      "unicode": "e6e6",
+      "unicode_decimal": 59110
+    },
+    {
+      "icon_id": "37999048",
+      "name": "email",
+      "font_class": "email",
+      "unicode": "e6cf",
+      "unicode_decimal": 59087
+    },
+    {
+      "icon_id": "37999047",
+      "name": "Camera",
+      "font_class": "Camera",
+      "unicode": "e6d0",
+      "unicode_decimal": 59088
+    },
+    {
+      "icon_id": "37892034",
+      "name": "jiantou",
+      "font_class": "jiantou",
+      "unicode": "e6cb",
+      "unicode_decimal": 59083
+    },
+    {
+      "icon_id": "37891594",
+      "name": "bianji",
+      "font_class": "bianji",
+      "unicode": "e6ca",
+      "unicode_decimal": 59082
+    },
+    {
+      "icon_id": "37844292",
+      "name": "message",
+      "font_class": "message",
+      "unicode": "e6c9",
+      "unicode_decimal": 59081
+    },
+    {
+      "icon_id": "37843406",
+      "name": "chuangjian",
+      "font_class": "chuangjian",
+      "unicode": "e6c6",
+      "unicode_decimal": 59078
+    },
+    {
+      "icon_id": "37843370",
+      "name": "Challenge",
+      "font_class": "Challenge",
+      "unicode": "e6c3",
+      "unicode_decimal": 59075
+    },
+    {
+      "icon_id": "37843369",
+      "name": "Team",
+      "font_class": "Team",
+      "unicode": "e6c4",
+      "unicode_decimal": 59076
+    },
+    {
+      "icon_id": "37843367",
+      "name": "Back",
+      "font_class": "Back",
+      "unicode": "e6c5",
+      "unicode_decimal": 59077
+    },
+    {
+      "icon_id": "37843366",
+      "name": "yaoqing",
+      "font_class": "yaoqing",
+      "unicode": "e6c7",
+      "unicode_decimal": 59079
+    },
+    {
+      "icon_id": "37843365",
+      "name": "lishixiaoxi",
+      "font_class": "lishixiaoxi",
+      "unicode": "e6c8",
+      "unicode_decimal": 59080
+    },
+    {
+      "icon_id": "37843305",
+      "name": "Log out",
+      "font_class": "a-Logout",
+      "unicode": "e6c0",
+      "unicode_decimal": 59072
+    },
+    {
+      "icon_id": "37843303",
+      "name": "yuyan",
+      "font_class": "yuyan1",
+      "unicode": "e6c1",
+      "unicode_decimal": 59073
+    },
+    {
+      "icon_id": "37843304",
+      "name": "Profile",
+      "font_class": "Profile",
+      "unicode": "e6c2",
+      "unicode_decimal": 59074
+    },
+    {
+      "icon_id": "37620085",
+      "name": "xianshi",
+      "font_class": "xianshi",
+      "unicode": "e6be",
+      "unicode_decimal": 59070
+    },
+    {
+      "icon_id": "37617859",
+      "name": "yincang",
+      "font_class": "yincang",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
+      "icon_id": "37617857",
+      "name": "qingchu",
+      "font_class": "qingchu",
+      "unicode": "e6bf",
+      "unicode_decimal": 59071
+    },
+    {
+      "icon_id": "37617663",
+      "name": "chenggong",
+      "font_class": "chenggong",
+      "unicode": "e6bd",
+      "unicode_decimal": 59069
+    },
+    {
+      "icon_id": "37617666",
+      "name": "shibai",
+      "font_class": "shibai",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
+      "icon_id": "37617665",
+      "name": "yuyan",
+      "font_class": "yuyan",
+      "unicode": "e6bb",
+      "unicode_decimal": 59067
+    },
+    {
+      "icon_id": "37617664",
+      "name": "xuanzhe",
+      "font_class": "xuanzhe",
+      "unicode": "e6bc",
+      "unicode_decimal": 59068
+    }
+  ]
+}

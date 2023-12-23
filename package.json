@@ -1,0 +1,30 @@
+{
+  "name": "leaderboard-frontend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
+    "axios": "^0.26.1",
+    "element-plus": "^2.3.7",
+    "js-cookie": "^3.0.5",
+    "jsencrypt": "^3.3.2",
+    "ress": "^5.0.2",
+    "vue": "^3.3.4",
+    "vue-i18n": "^9.3.0-beta.26",
+    "vue-router": "^4.2.4",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.3.4",
+    "sass": "^1.63.6",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.2",
+    "vite": "^4.4.9"
+  }
+}

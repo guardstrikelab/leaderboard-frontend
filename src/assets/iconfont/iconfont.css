@@ -1,0 +1,148 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4279683 */
+  src: url('iconfont.woff2?t=1703136951113') format('woff2'),
+       url('iconfont.woff?t=1703136951113') format('woff'),
+       url('iconfont.ttf?t=1703136951113') format('truetype'),
+       url('iconfont.svg?t=1703136951113#iconfont') format('svg');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-kaishi:before {
+  content: "\e6ee";
+}
+
+.icon-yunxing:before {
+  content: "\e6ef";
+}
+
+.icon-rili:before {
+  content: "\e6eb";
+}
+
+.icon-shouqi:before {
+  content: "\e6ec";
+}
+
+.icon-zhankai:before {
+  content: "\e6ed";
+}
+
+.icon-a-HostedChallenge:before {
+  content: "\e6e7";
+}
+
+.icon-Delete:before {
+  content: "\e6e8";
+}
+
+.icon-a-CreatePhases:before {
+  content: "\e6e9";
+}
+
+.icon-Search:before {
+  content: "\e6ea";
+}
+
+.icon-Cancel:before {
+  content: "\e6e4";
+}
+
+.icon-copy:before {
+  content: "\e6e5";
+}
+
+.icon-load:before {
+  content: "\e6e6";
+}
+
+.icon-email:before {
+  content: "\e6cf";
+}
+
+.icon-Camera:before {
+  content: "\e6d0";
+}
+
+.icon-jiantou:before {
+  content: "\e6cb";
+}
+
+.icon-bianji:before {
+  content: "\e6ca";
+}
+
+.icon-message:before {
+  content: "\e6c9";
+}
+
+.icon-chuangjian:before {
+  content: "\e6c6";
+}
+
+.icon-Challenge:before {
+  content: "\e6c3";
+}
+
+.icon-Team:before {
+  content: "\e6c4";
+}
+
+.icon-Back:before {
+  content: "\e6c5";
+}
+
+.icon-yaoqing:before {
+  content: "\e6c7";
+}
+
+.icon-lishixiaoxi:before {
+  content: "\e6c8";
+}
+
+.icon-a-Logout:before {
+  content: "\e6c0";
+}
+
+.icon-yuyan1:before {
+  content: "\e6c1";
+}
+
+.icon-Profile:before {
+  content: "\e6c2";
+}
+
+.icon-xianshi:before {
+  content: "\e6be";
+}
+
+.icon-yincang:before {
+  content: "\e6b9";
+}
+
+.icon-qingchu:before {
+  content: "\e6bf";
+}
+
+.icon-chenggong:before {
+  content: "\e6bd";
+}
+
+.icon-shibai:before {
+  content: "\e6ba";
+}
+
+.icon-yuyan:before {
+  content: "\e6bb";
+}
+
+.icon-xuanzhe:before {
+  content: "\e6bc";
+}
+

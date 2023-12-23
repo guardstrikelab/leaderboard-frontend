@@ -1,0 +1,236 @@
+<template>
+  <div class="container">
+    <div class="container-main mb24">
+      <el-form
+        ref="ruleFormRef"
+        :model="ruleForm"
+        :rules="rules"
+        label-width="200px"
+        label-position="top"
+        size="default"
+        status-icon
+        hide-required-asterisk>
+        <el-form-item :label="$t('addChall.title')" prop="title">
+          <el-input v-model="ruleForm.title" />
+        </el-form-item>
+        <el-form-item :label="$t('addChall.shortDesc')" prop="short_description">
+          <editor v-model="ruleForm.short_description"></editor>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.desc')" prop="description">
+          <editor v-model="ruleForm.description"></editor>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.evaluation')" prop="evaluation_details">
+          <editor v-model="ruleForm.evaluation_details"></editor>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.termsConditions')" prop="terms_and_conditions">
+          <editor v-model="ruleForm.terms_and_conditions"></editor>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.image')" prop="image">
+          <el-upload
+            class="avatar-uploader"
+            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="ruleForm.image" :src="ruleForm.image" class="avatar" />
+            <span v-else class="avatar-uploader-icon">
+              <svg class="icon" style="font-size: 24px" aria-hidden="true">
+                <use xlink:href="#icon-chuangjian"></use>
+              </svg>
+              <span class="mt24">{{ $t('addChall.imagePH') }}</span>
+            </span>
+          </el-upload>
+        </el-form-item>
+
+        <el-form-item :label="$t('addChall.SubmiGuide')" prop="submission_guidelines">
+          <editor v-model="ruleForm.submission_guidelines"></editor>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.lbDesc')" prop="leaderboard_description">
+          <editor v-model="ruleForm.leaderboard_description"></editor>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.startDate')">
+          <div class="flex-between" style="width: 100%">
+            <el-form-item prop="start_date" required>
+              <el-date-picker
+                v-model="ruleForm.start_date"
+                type="datetime"
+                placeholder="Select date and time"
+                value-format="YYYY-MM-DDTHH:mm:ssZ"
+                style="width: 300px" />
+            </el-form-item>
+            <el-form-item :label="$t('addChall.endDate')" prop="end_date" required>
+              <el-date-picker
+                v-model="ruleForm.end_date"
+                type="datetime"
+                placeholder="Select date and time"
+                value-format="YYYY-MM-DDTHH:mm:ssZ"
+                style="width: 300px" />
+            </el-form-item>
+          </div>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.published')" prop="published">
+          <radio-group v-model="ruleForm.published"></radio-group>
+        </el-form-item>
+      </el-form>
+    </div>
+    <el-button style="width: 180px; border-radius: 2px" type="primary" @click="submitForm(ruleFormRef)"> {{ $t('create') }} </el-button>
+    <el-button style="width: 180px; border-radius: 2px" @click="cancelForm()">{{ $t('cancel') }}</el-button>
+  </div>
+</template>
+
+<script setup>
+import Editor from '@/components/Editor.vue';
+import RadioGroup from '@/components/RadioGroup.vue';
+import { onBeforeUnmount, ref, shallowRef, onMounted, reactive } from 'vue';
+import { createChallenge } from '@/api/host';
+import { getChallengeDetail } from '@/api/challenge';
+import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+const router = useRouter();
+const route = useRoute();
+
+const ruleForm = reactive({
+  id: undefined,
+  title: '',
+  short_description: '',
+  description: '',
+  evaluation_details: '',
+  terms_and_conditions: '',
+  image: '',
+  submission_guidelines: '',
+  leaderboard_description: '',
+  evaluation_script: '',
+  remote_evaluation: false,
+  is_docker_based: false,
+  start_date: '',
+  end_date: '',
+  published: false,
+});
+
+const handleAvatarSuccess = (response, uploadFile) => {
+  ruleForm.image = URL.createObjectURL(uploadFile.raw);
+};
+
+const beforeAvatarUpload = (rawFile) => {
+  if (rawFile.type !== 'image/jpeg') {
+    ElMessage.error('Avatar picture must be JPG format!');
+    return false;
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('Avatar picture size can not exceed 2MB!');
+    return false;
+  }
+  return true;
+};
+
+const ruleFormRef = ref();
+
+const validatehtml = (rule, value, callback) => {
+  if (!value || value == `<p><br></p>`) {
+    callback(new Error(rule.field + ' is required'));
+  } else {
+    callback();
+  }
+};
+
+const rules = reactive({
+  title: [
+    { required: true, message: 'title is required', trigger: 'blur' },
+    { min: 3, max: 100, message: 'Length should be 3 to 100', trigger: 'blur' },
+  ],
+  short_description: [{ validator: validatehtml, trigger: 'blur' }],
+  description: [{ validator: validatehtml, trigger: 'blur' }],
+  evaluation_details: [{ validator: validatehtml, trigger: 'blur' }],
+  terms_and_conditions: [{ validator: validatehtml, trigger: 'blur' }],
+  submission_guidelines: [{ validator: validatehtml, trigger: 'blur' }],
+  leaderboard_description: [{ validator: validatehtml, trigger: 'blur' }],
+});
+
+const submitForm = async (formEl) => {
+  if (!formEl) return;
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      let params = {
+        title: ruleForm.title,
+        short_description: ruleForm.short_description,
+        description: ruleForm.description,
+        evaluation_details: ruleForm.evaluation_details,
+        terms_and_conditions: ruleForm.terms_and_conditions,
+        submission_guidelines: ruleForm.submission_guidelines,
+        leaderboard_description: ruleForm.leaderboard_description,
+        start_date: ruleForm.start_date,
+        end_date: ruleForm.end_date,
+        published: ruleForm.published,
+        id: ruleForm.id,
+      };
+      createChallenge(params).then((res) => {
+        ElMessage.success(ruleForm.id !== undefined ? t('addChall.updateSuccess') : t('addChall.createSuccess'));
+        router.push('/host');
+      });
+    }
+  });
+};
+
+const resetForm = (formEl) => {
+  if (!formEl) return;
+  formEl.resetFields();
+};
+
+const cancelForm = () => {
+  router.push('/host');
+};
+
+onMounted(() => {
+  if (route.params.challengeId !== undefined) {
+    getChallengeDetail(route.params.challengeId).then((res) => {
+      ruleForm.title = res.title;
+      ruleForm.short_description = res.short_description;
+      ruleForm.description = res.description;
+      ruleForm.evaluation_details = res.evaluation_details;
+      ruleForm.terms_and_conditions = res.terms_and_conditions;
+      ruleForm.submission_guidelines = res.submission_guidelines;
+      ruleForm.leaderboard_description = res.leaderboard_description;
+      ruleForm.start_date = res.start_date;
+      ruleForm.end_date = res.end_date;
+      ruleForm.published = res.published;
+      ruleForm.id = res.id;
+    });
+  }
+});
+</script>
+
+<style lang="scss" scoped>
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  .container-main {
+    padding: 32px 40px 24px 40px;
+    background: #292f3a;
+    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #424e61;
+    .avatar-uploader {
+      :deep(.el-upload) {
+        border-radius: 2px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: var(--el-transition-duration-fast);
+      }
+      .avatar-uploader-icon {
+        width: 260px;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        background: #343c4d;
+        color: #7f889a;
+        line-height: 12px;
+      }
+    }
+  }
+}
+</style>
