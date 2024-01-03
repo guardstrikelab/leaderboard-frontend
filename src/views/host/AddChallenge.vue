@@ -26,13 +26,8 @@
           <editor v-model="ruleForm.terms_and_conditions"></editor>
         </el-form-item>
         <el-form-item :label="$t('addChall.image')" prop="image">
-          <el-upload
-            class="avatar-uploader"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="ruleForm.image" :src="ruleForm.image" class="avatar" />
+          <el-upload class="avatar-uploader" name="image" :show-file-list="false" :on-change="onFileChange" :auto-upload="false">
+            <img v-if="ruleForm.image" :src="ruleForm.imageUrl || ruleForm.image" class="avatar" />
             <span v-else class="avatar-uploader-icon">
               <svg class="icon" style="font-size: 24px" aria-hidden="true">
                 <use xlink:href="#icon-chuangjian"></use>
@@ -73,7 +68,9 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-button style="width: 180px; border-radius: 2px" type="primary" @click="submitForm(ruleFormRef)"> {{ $t('create') }} </el-button>
+    <el-button style="width: 180px; border-radius: 2px" type="primary" @click="submitForm(ruleFormRef)">
+      {{ ruleForm.id ? $t('save') : $t('create') }}
+    </el-button>
     <el-button style="width: 180px; border-radius: 2px" @click="cancelForm()">{{ $t('cancel') }}</el-button>
   </div>
 </template>
@@ -110,19 +107,16 @@ const ruleForm = reactive({
   published: false,
 });
 
-const handleAvatarSuccess = (response, uploadFile) => {
-  ruleForm.image = URL.createObjectURL(uploadFile.raw);
-};
-
-const beforeAvatarUpload = (rawFile) => {
-  if (rawFile.type !== 'image/jpeg') {
-    ElMessage.error('Avatar picture must be JPG format!');
+const onFileChange = (uploadFile) => {
+  if (!uploadFile.raw.type.startsWith('image/')) {
+    ElMessage.error('Please select a picture!');
     return false;
-  } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error('Avatar picture size can not exceed 2MB!');
+  } else if (uploadFile.raw.size / 1024 / 1024 > 5) {
+    ElMessage.error('Picture size can not exceed 5MB!');
     return false;
   }
-  return true;
+  ruleForm.image = uploadFile.raw;
+  ruleForm.imageUrl = URL.createObjectURL(uploadFile.raw);
 };
 
 const ruleFormRef = ref();
@@ -152,20 +146,22 @@ const submitForm = async (formEl) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      let params = {
-        title: ruleForm.title,
-        short_description: ruleForm.short_description,
-        description: ruleForm.description,
-        evaluation_details: ruleForm.evaluation_details,
-        terms_and_conditions: ruleForm.terms_and_conditions,
-        submission_guidelines: ruleForm.submission_guidelines,
-        leaderboard_description: ruleForm.leaderboard_description,
-        start_date: ruleForm.start_date,
-        end_date: ruleForm.end_date,
-        published: ruleForm.published,
-        id: ruleForm.id,
-      };
-      createChallenge(params).then((res) => {
+      let formData = new FormData();
+      formData.append('title', ruleForm.title);
+      formData.append('short_description', ruleForm.short_description);
+      formData.append('description', ruleForm.description);
+      formData.append('evaluation_details', ruleForm.evaluation_details);
+      formData.append('terms_and_conditions', ruleForm.terms_and_conditions);
+      formData.append('submission_guidelines', ruleForm.submission_guidelines);
+      formData.append('leaderboard_description', ruleForm.leaderboard_description);
+      formData.append('start_date', ruleForm.start_date);
+      formData.append('end_date', ruleForm.end_date);
+      formData.append('published', ruleForm.published);
+      formData.append('image', ruleForm.image);
+      if (ruleForm.id) {
+        formData.append('id', ruleForm.id);
+      }
+      createChallenge(formData).then((res) => {
         ElMessage.success(ruleForm.id !== undefined ? t('addChall.updateSuccess') : t('addChall.createSuccess'));
         router.push('/host');
       });
@@ -196,6 +192,7 @@ onMounted(() => {
       ruleForm.end_date = res.end_date;
       ruleForm.published = res.published;
       ruleForm.id = res.id;
+      ruleForm.image = res.image;
     });
   }
 });
@@ -217,6 +214,9 @@ onMounted(() => {
         position: relative;
         overflow: hidden;
         transition: var(--el-transition-duration-fast);
+        img {
+          max-width: 100%;
+        }
       }
       .avatar-uploader-icon {
         width: 260px;

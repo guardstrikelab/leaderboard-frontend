@@ -203,6 +203,13 @@ export default {
     },
     phase: '阶段',
   },
+  participate: {
+    continue: '继续',
+    accept_text1: '请接受',
+    accept_text2: '规则和条款',
+    accept_text3: '才能参加比赛。',
+    accept_label: '我接受条款和条件',
+  },
   submission: {
     guidelines: '投稿须知',
     guideTxt: '客户可以快速刷卡。确实打败了当年的新闻学习。表面她倾向。账户播放食物索赔，尽管女儿改变了用途。',

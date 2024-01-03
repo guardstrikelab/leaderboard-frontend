@@ -1,17 +1,17 @@
 <template>
-  <el-select v-model="selectedPhaseId" class="mb16" :placeholder="$t('submission.phasePH')" @change="handleChangePhase">
+  <el-select v-model="selectedPhaseId" class="mb16" :placeholder="$t('submission.phasePH')" @change="handleChangePhase" style="width: 360px">
     <el-option v-for="item in phases" :key="item.id" :label="item.name" :value="item.id" />
   </el-select>
   <el-table :data="submissionList" stripe style="width: 100%">
     <el-table-column fixed type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" />
-    <el-table-column prop="participant_team" :label="$t('submission.team')"> </el-table-column>
+    <el-table-column prop="participant_team" :label="$t('submission.team')" width="250"> </el-table-column>
     <el-table-column prop="created_by" :label="$t('submission.createdBy')"> </el-table-column>
     <el-table-column prop="status" :label="$t('submission.status')">
       <template #default="{ row }">
         <span :class="['submis-status', row.status]">{{ row.status.charAt(0).toUpperCase() + row.status.slice(1) }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="execution_time" :label="$t('submission.executTime')" />
+    <el-table-column prop="execution_time" :label="$t('submission.executTime')" width="160" />
     <el-table-column prop="submission_result_file" :label="$t('submission.resultFile')">
       <template #default="{ row }">
         <el-link type="primary" v-if="row.submission_result_file" :href="row.submission_result_file" target="_blank">Link</el-link>
@@ -37,7 +37,8 @@
         (row) => {
           return formatTime(row.submitted_at);
         }
-      " />
+      "
+      width="200" />
   </el-table>
 
   <el-button link class="mt24" @click="loadMore" v-if="pager.total > pager.pageNum * pager.pageSize">

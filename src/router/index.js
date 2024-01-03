@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Layout from '../layout/Index.vue';
 import i18n from '@/lang/index.js';
 import store from '../store';
-const redirect = store.state.token ? '/challenge' : '/challenge/home';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,7 +9,7 @@ const router = createRouter({
     {
       path: '',
       component: Layout,
-      redirect: redirect,
+      redirect: '/challenge/home',
       children: [
         {
           path: '/challenge',

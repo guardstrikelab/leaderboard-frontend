@@ -115,6 +115,11 @@ service.interceptors.response.use(
       message = getErrMsg(response.data.error);
     } else if (response.status == 401 && response.data?.detail) {
       message = getErrMsg(response.data.detail);
+      if (response.data.detail === 'Invalid token' || response.data.detail === 'Token has expired') {
+        store.dispatch('logOut').then(() => {
+          location.href = '/';
+        });
+      }
     } else if (response.status == 403 && response.data?.detail == 'Please verify your email!') {
       isShowMessage = false;
       router.push('/permissionDenied');
@@ -130,7 +135,7 @@ service.interceptors.response.use(
       message = i18n.global.t('systemInterface') + ' ' + message.substr(message.length - 3) + ' ' + i18n.global.t('exception');
     }
     if (isShowMessage) {
-      ElMessage({ message: message, type: 'error', duration: 5 * 1000 });
+      ElMessage({ message: message, grouping: true, type: 'error', duration: 5 * 1000 });
     }
     return Promise.reject(error);
   }

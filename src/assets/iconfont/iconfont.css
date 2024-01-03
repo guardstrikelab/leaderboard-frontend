@@ -1,9 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4279683 */
-  src: url('iconfont.woff2?t=1703136951113') format('woff2'),
-       url('iconfont.woff?t=1703136951113') format('woff'),
-       url('iconfont.ttf?t=1703136951113') format('truetype'),
-       url('iconfont.svg?t=1703136951113#iconfont') format('svg');
+  src: url('iconfont.woff2?t=1703643028412') format('woff2'),
+       url('iconfont.woff?t=1703643028412') format('woff'),
+       url('iconfont.ttf?t=1703643028412') format('truetype'),
+       url('iconfont.svg?t=1703643028412#iconfont') format('svg');
 }
 
 .iconfont {
@@ -12,6 +12,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-camera:before {
+  content: "\e6f0";
 }
 
 .icon-kaishi:before {

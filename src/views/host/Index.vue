@@ -51,7 +51,7 @@
           <div class="expand-panel">
             <div class="title mb16">Challenge_phases：</div>
             <el-table :data="props.row.phaseList" :show-header="false">
-              <el-table-column label="Name" prop="name" width="200" />
+              <el-table-column label="Name" prop="name" width="250" />
               <el-table-column label="Description" prop="description">
                 <template #default="{ row }">
                   <div v-html="row.description"></div>
@@ -85,7 +85,7 @@
       <el-table-column prop="id" label="ID" width="100" />
       <el-table-column prop="title" :label="$t('host.title')">
         <template #default="{ row }">
-          <div class="underline" @click="$router.push(`/host/challenge/${row.id}`);">{{ row.title }}</div>
+          <div class="underline" @click="$router.push(`/host/challenge/${row.id}`)">{{ row.title }}</div>
         </template>
       </el-table-column>
       <el-table-column
@@ -320,7 +320,8 @@ const expandChange = (row, expandedRows) => {
   }
   :deep(.el-table__expand-icon) {
     content: url('@/assets/images/shouqi.png') !important;
-    height: 14px;
+    height: 15px;
+    padding: 1px;
     & > .el-icon {
       display: none !important;
     }

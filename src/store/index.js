@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { getUser, login, register, logout } from '@/api/user.js';
+import { getUser, updateUser, login, register, logout } from '@/api/user.js';
 import { verifyHostUser } from '@/api/host.js';
 import { getToken, setToken, removeToken, removeJwtToken } from '@/utils/auth';
 
@@ -68,6 +68,13 @@ export default createStore({
     // 获取当前用户信息
     getUserInfo({ commit }) {
       return getUser().then((res) => {
+        commit('setUser', res);
+      });
+    },
+
+    // 更新当前用户信息
+    updateUser({ commit }, userInfo) {
+      return updateUser(userInfo).then((res) => {
         commit('setUser', res);
       });
     },

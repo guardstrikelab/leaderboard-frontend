@@ -28,7 +28,7 @@
           v-model.trim="form.email"
           :placeholder="$t('forget.emailPH')"
           class="input-item"
-          maxlength="32"
+          maxlength="70"
           @keypress.enter="validateForm"></el-input>
       </el-form-item>
       <div class="auth-submit-btn" @click="validateForm">{{ $t('forget.submit') }}</div>

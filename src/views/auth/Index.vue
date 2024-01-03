@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="operation">
-      <lang-select></lang-select>
+      <!-- <lang-select></lang-select> -->
     </div>
     <main>
       <router-view />

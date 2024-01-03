@@ -205,6 +205,13 @@ export default {
     },
     phase: 'Phase',
   },
+  participate: {
+    continue: 'Continue',
+    accept_text1: 'please accept the',
+    accept_text2: 'rules and terms',
+    accept_text3: 'in order to participate.',
+    accept_label: 'I accept the terms and conditions.',
+  },
   submission: {
     guidelines: 'Submission Guidelines',
     guideTxt: 'Card quickly that customer can. Indeed beat year news learn. Surface she tend. Account play food claim despite daughter change use.',
@@ -317,7 +324,7 @@ export default {
     startDate_utc: 'Start Date(UTC)',
     endDate_utc: 'End Date(UTC)',
     creator: 'Creator',
-    publicyAvailable: 'Publicy Available',
+    publicyAvailable: 'Published',
     isRegistrationOpen: 'Is Registration Open',
     enableForum: 'Enable Forum',
     createPhases: 'Create Phases',

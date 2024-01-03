@@ -12,7 +12,7 @@
     :validate-on-rule-change="false"
     require-asterisk-position="right">
     <el-form-item :label="$t('login.username')" prop="username">
-      <el-input v-model.trim="form.username" :placeholder="$t('login.usernamePH')" class="input-item" maxlength="32"></el-input>
+      <el-input v-model.trim="form.username" :placeholder="$t('login.usernamePH')" class="input-item" maxlength="150"></el-input>
     </el-form-item>
     <el-form-item :label="$t('login.password')" prop="password">
       <el-input
@@ -21,7 +21,7 @@
         v-model.trim="form.password"
         :placeholder="$t('login.passwordPH')"
         @keypress.enter="validateForm"
-        maxlength="32"
+        maxlength="128"
         show-password></el-input>
     </el-form-item>
     <!-- <el-form-item style="margin-top: 18px">
@@ -39,12 +39,13 @@
 import { onMounted, ref, reactive } from 'vue';
 import { encrypt, decrypt } from '@/utils/jsencrypt';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const { t } = useI18n();
 const router = useRouter();
+const route = useRoute();
 
 const form = reactive({
   username: '',
@@ -85,7 +86,7 @@ const submit = () => {
     })
     .then((res) => {
       loading.close();
-      router.push('/');
+      router.push(route.query.redirect || '/challenge');
     })
     .catch((error) => {
       loading.close();

@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <Toolbar style="border-bottom: 1px solid #434d60" :editor="editorRef" :defaultConfig="toolbarConfig" mode="simple" />
+    <Toolbar style="border-bottom: 1px solid #434d60" :editor="editorRef" :defaultConfig="toolbarConfig" mode="default" />
     <Editor
       style="height: 140px; overflow-y: hidden"
       :model-value="modelValue"
@@ -25,9 +25,28 @@ const editorRef = shallowRef();
 const { locale } = useI18n();
 
 const toolbarConfig = {
-  excludeKeys: ['group-image', 'insertLink', 'insertVideo', 'fullScreen'],
+  excludeKeys: ['group-more-style', 'emotion', 'insertLink', 'insertImage', 'group-video', 'insertVideo', 'divider', 'fullScreen'],
 };
-const editorConfig = { placeholder: '' };
+const editorConfig = {
+  placeholder: '',
+  MENU_CONF: {
+    uploadImage: {
+      server: import.meta.env.VITE_APP_BASE_API + '/api/web/upload_image/',
+      fieldName: 'image',
+      maxFileSize: 5 * 1024 * 1024, // 5M
+      maxNumberOfFiles: 100,
+      headers: {
+        Authorization: `Token ${localStorage.getItem('Admin-Token')}`,
+      },
+      onError: (file, err, res) => {
+        ElMessage.error(err.message);
+      },
+      customInsert(res, insertFn) {
+        insertFn(res.image_url);
+      },
+    },
+  },
+};
 onBeforeMount(() => {
   if (locale.value == 'zh') {
     i18nChangeLanguage('zh-CN');
@@ -44,6 +63,11 @@ onBeforeUnmount(() => {
 
 const handleCreated = (editor) => {
   editorRef.value = editor; // 记录editor实例
+  // setTimeout(() => {
+  //   const toolbar = DomEditor.getToolbar(editor);
+  //   let keys = toolbar.getConfig().toolbarKeys;
+  //   console.log('keys', keys);
+  // }, 2000);
 };
 </script>
 

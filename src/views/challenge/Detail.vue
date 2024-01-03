@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="banner"></div>
+    <div class="banner" :style="{ backgroundImage: detailInfo.image ? 'url(' + detailInfo.image + ')' : 'url(' + getImageUrl('banner') + ')' }"></div>
     <div class="digest">
       <div class="flex-between mb20" style="height: 32px">
         <div class="title">{{ detailInfo.title }}</div>
@@ -19,20 +19,21 @@
           <overview :detailInfo="detailInfo" :phases="phases"></overview>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.participate')" name="participate" v-if="!teamDetail">
-          <participate :challengeId="challengeId" @callback="getPartTeam('submission')"></participate>
+          <participate :challengeId="challengeId" @callback="getPartTeam('submission')" @openTerm="openTerm"></participate>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.submission')" name="submission" v-else>
           <submission
             :challengeId="challengeId"
             :approved="teamDetail.approved"
-            :allowCancel="allowCancel"
+            :allowCancel="detailInfo.allow_cancel_running_submissions"
+            :guidelines="detailInfo.submission_guidelines"
             :phases="phases"
             @callback="deregister"></submission>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.leaderboard')" name="leaderboard">
-          <leader-board :challengeId="challengeId"></leader-board>
+          <leader-board :challengeId="challengeId" :description="detailInfo.leaderboard_description"></leader-board>
         </el-tab-pane>
-        <el-tab-pane :label="$t('challenge.approval')" name="approval" v-if="isChallengeHost && manualApproval">
+        <el-tab-pane :label="$t('challenge.approval')" name="approval" v-if="isChallengeHost && detailInfo.manual_participant_approval">
           <approval :challengeId="challengeId"></approval>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.allSubmission')" name="allSubmission" v-if="isChallengeHost">
@@ -59,6 +60,10 @@ import { useI18n } from 'vue-i18n';
 import { formatTime, oaMessageBox } from '@/utils/tool';
 import { useStore } from 'vuex';
 
+const getImageUrl = (name) => {
+  return new URL(`../../assets/images/${name}.png`, import.meta.url).href;
+};
+
 const { t } = useI18n();
 const route = useRoute();
 const store = useStore();
@@ -74,6 +79,14 @@ const getPartTeam = (tabId) => {
       activeName.value = tabId;
     }
   });
+};
+
+const openTerm = () => {
+  activeName.value = 'overview';
+  setTimeout(() => {
+    let dom = document.querySelector('#term');
+    dom && dom.scrollIntoView();
+  }, 200);
 };
 const clearPartTeam = (tabId) => {
   teamDetail.value = undefined;
@@ -117,8 +130,6 @@ const deregister = () => {
 };
 
 const isChallengeHost = ref(false); // 是否是该比赛的主办方
-const manualApproval = ref(false); // 比赛团队是否需要人工审核
-const allowCancel = ref(false); // 是否允许取消正在执行的任务
 const getUserRole = () => {
   getChallengeUser(challengeId).then((res) => {
     isChallengeHost.value = res.is_challenge_host;
@@ -127,8 +138,6 @@ const getUserRole = () => {
 
 const challengeDetail = () => {
   getChallengeDetail(challengeId).then((res) => {
-    manualApproval.value = res.manual_participant_approval;
-    allowCancel.value = res.allow_cancel_running_submissions;
     detailInfo.value = res || {};
   });
 };
@@ -137,7 +146,8 @@ const challengeDetail = () => {
 <style lang="scss" scoped>
 .banner {
   height: 248px;
-  background: url('@/assets/images/banner.png') no-repeat;
+  background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
 }
 .digest {

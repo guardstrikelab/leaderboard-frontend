@@ -36,6 +36,9 @@ export const logout = () =>
   service({
     method: 'post',
     url: '/api/auth/logout/',
+    headers: {
+      noMessage: true,
+    },
   });
 
 // 密码重置

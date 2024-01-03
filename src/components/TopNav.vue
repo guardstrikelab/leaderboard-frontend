@@ -16,7 +16,7 @@
         :show-arrow="false">
         <template #reference>
           <div class="flex-center">
-            <el-avatar :size="32" :src="avatar" style="margin-right: 8px" />
+            <el-avatar :size="32" :src="store.state.userInfo?.avatar || avatar" style="margin-right: 8px" />
             <span>{{ store.state.userInfo?.username ?? '' }}</span>
             <svg class="icon ml8" aria-hidden="true">
               <use xlink:href="#icon-jiantou"></use>
@@ -26,7 +26,7 @@
 
         <div>
           <div class="top mb8">
-            <el-avatar :size="32" :src="avatar" style="margin-right: 8px" />
+            <el-avatar :size="32" :src="store.state.userInfo?.avatar || avatar" style="margin-right: 8px" />
             <span>
               {{ store.state.userInfo?.username ?? '' }}
             </span>

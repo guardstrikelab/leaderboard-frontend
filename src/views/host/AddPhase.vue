@@ -69,7 +69,9 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-button style="width: 180px; border-radius: 2px" type="primary" @click="submitForm(ruleFormRef)"> {{ $t('create') }} </el-button>
+    <el-button style="width: 180px; border-radius: 2px" type="primary" @click="submitForm(ruleFormRef)">
+      {{ ruleForm.id ? $t('save') : $t('create') }}
+    </el-button>
     <el-button style="width: 180px; border-radius: 2px" @click="cancelForm()">{{ $t('cancel') }}</el-button>
   </div>
 </template>

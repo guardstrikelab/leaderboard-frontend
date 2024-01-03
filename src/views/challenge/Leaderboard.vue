@@ -1,4 +1,9 @@
 <template>
+  <div class="title mb24">{{ $t('challenge.leaderboard') }}</div>
+  <div class="mb24">
+    <div v-html="description" class="editor-content-view"></div>
+  </div>
+
   <div class="flex-center mb16">
     <el-select v-model="curSplitId" :placeholder="$t('submission.phasePH')" @change="splitChange" style="width: 360px" class="mr16">
       <el-option v-for="item in splits" :key="item.id" :label="getSplitLabel(item)" :value="item.id" />
@@ -12,9 +17,9 @@
 
   <el-table :data="leaderboardList" stripe style="width: 100%" header-cell-class-name="thBg">
     <el-table-column fixed prop="rank" :label="$t('leaderboard.rank')" width="80" />
-    <el-table-column fixed sortable prop="submission__participant_team__team_name" :label="$t('leaderboard.team')" />
+    <el-table-column fixed sortable prop="submission__participant_team__team_name" :label="$t('leaderboard.team')" width="250" />
     <!-- <el-table-column sortable prop="filtering_score" :label="$t('leaderboard.score')" /> -->
-    <el-table-column sortable :label="label" v-for="(label, i) in labels" :key="label">
+    <el-table-column sortable :label="label" v-for="(label, i) in labels" :key="label" width="280">
       <template #default="{ row }">
         {{ row.result[i] }}
       </template>
@@ -27,7 +32,8 @@
         (row) => {
           return formatTime(row.submission__submitted_at);
         }
-      " />
+      "
+      width="200" />
   </el-table>
 </template>
 
@@ -36,12 +42,28 @@ import { onMounted, reactive, ref } from 'vue';
 import { getPhaseSplit, getLeaderboard } from '@/api/challenge';
 import { formatTime } from '@/utils/tool';
 
-const props = defineProps(['challengeId']);
+const props = defineProps(['challengeId', 'description']);
 const curSplitId = ref('');
 const splits = ref([]);
 const isByScore = ref(false);
 const curOrderBy = ref('');
-const labels = ref([]);
+const labels = ref([
+  'Driving score',
+  'Route completion',
+  'Infraction penalty',
+  'Collisions pedestrians',
+  'Collisions vehicles',
+  'Collisions layout',
+  'Red light infractions',
+  'Stop sign infractions',
+  'Off-road infractions',
+  'Route deviations',
+  'Route timeouts',
+  'Agent blocked',
+  'Yield emergency vehicle infractions',
+  'Scenario timeouts',
+  'Min speed infractions',
+]);
 const getSplitLabel = (item) => {
   return `Phase: ${item.challenge_phase_name}`;
 };
@@ -72,4 +94,8 @@ const splitChange = () => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.title {
+  font-weight: 700;
+}
+</style>

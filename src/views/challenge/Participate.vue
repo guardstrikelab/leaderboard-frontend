@@ -16,7 +16,7 @@
         @current-change="getTeams"
         class="mt24 oa-pagination" />
       <el-button type="primary" size="large" class="long-button mt24" :disabled="!activeId" @click="participate">{{
-        $t('challenge.participate')
+        $t('participate.continue')
       }}</el-button>
     </div>
     <div class="team_ul nodata" v-else>
@@ -46,6 +46,30 @@
     </el-button>
     <span>{{ $t('challenge.partiChall') }}</span>
   </div>
+
+  <el-dialog
+    v-model="acceptDialog.visible"
+    :title="$t('overview.term.title')"
+    width="500"
+    class="oa-dialog"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    align-center>
+    <div class="accept-con">
+      {{ $t('participate.accept_text1') }} <span @click="goTermDetail">{{ $t('participate.accept_text2') }}</span>
+      {{ $t('participate.accept_text3') }}
+    </div>
+    <el-checkbox v-model="acceptDialog.accept" :label="$t('participate.accept_label')" />
+    <template #footer>
+      <div class="between">
+        <div></div>
+        <div>
+          <el-button @click="acceptDialog.visible = false" text bg>{{ $t('cancel') }}</el-button>
+          <el-button type="primary" :disabled="!acceptDialog.accept" @click="confirmParticipate"> {{ $t('challenge.participate') }} </el-button>
+        </div>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -61,7 +85,7 @@ const router = useRouter();
 const store = useStore();
 
 const props = defineProps(['challengeId']);
-const emit = defineEmits(['callback']);
+const emit = defineEmits(['callback', 'openTerm']);
 const pager = reactive({
   total: 0,
   pageNum: 1,
@@ -111,11 +135,27 @@ const saveTeam = () => {
       loading.close();
     });
 };
+
+const acceptDialog = reactive({
+  visible: false,
+  accept: false,
+});
 const participate = () => {
+  acceptDialog.visible = true;
+  acceptDialog.accept = false;
+};
+
+const confirmParticipate = () => {
   partChallenge(props.challengeId, activeId.value).then((res) => {
     emit('callback');
   });
 };
+
+const goTermDetail = () => {
+  acceptDialog.visible = false;
+  emit('openTerm');
+};
+
 const goLogin = () => {
   router.push('/auth/login');
 };
@@ -207,5 +247,18 @@ const goLogin = () => {
   border: 1px solid #424e61;
   align-items: center;
   justify-content: center;
+}
+.accept-con {
+  color: #fff;
+  margin-bottom: 10px;
+  span {
+    color: var(--el-color-primary);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+.el-checkbox :deep(.el-checkbox__label) {
+  color: #7f889a;
+  font-size: 12px;
 }
 </style>

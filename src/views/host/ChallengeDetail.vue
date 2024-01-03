@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="banner"></div>
+    <div class="banner" :style="{ backgroundImage: detailInfo.image ? 'url(' + detailInfo.image + ')' : 'url(' + racePng + ')' }"></div>
     <div class="digest">
       <div class="flex-between mb20" style="height: 32px">
         <div class="title">{{ detailInfo.title }}</div>
@@ -24,6 +24,7 @@ import { onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getChallengeDetail, challengePhase } from '@/api/challenge';
 import { formatTime } from '@/utils/tool';
+import racePng from '../../assets/images/banner.png';
 
 const route = useRoute();
 const challengeId = route.params.challengeId;
@@ -51,7 +52,8 @@ const challengeDetail = () => {
 <style lang="scss" scoped>
 .banner {
   height: 248px;
-  background: url('@/assets/images/banner.png') no-repeat;
+  background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
 }
 .digest {

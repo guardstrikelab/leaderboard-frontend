@@ -1,6 +1,9 @@
 <template>
   <div class="title mb24">{{ $t('submission.guidelines') }}</div>
-  <div class="describe mb24">{{ $t('submission.guideTxt') }}</div>
+  <div class="mb24">
+    <div v-html="guidelines" class="editor-content-view"></div>
+  </div>
+
   <div v-if="!approved">
     <div class="title mb24">
       <span>{{ $t('submission.deregisterChallenge') }}:</span>
@@ -88,7 +91,7 @@
     </div>
 
     <div class="title mb24">{{ $t('submission.list') }}</div>
-    <el-select v-model="selectedPhaseId" class="mb16" :placeholder="$t('submission.phasePH')" @change="handleChangePhase">
+    <el-select v-model="selectedPhaseId" class="mb16" :placeholder="$t('submission.phasePH')" @change="handleChangePhase" style="width: 300px">
       <el-option v-for="item in phases" :key="item.id" :label="item.name" :value="item.id" />
     </el-select>
     <el-table :data="submissionList" stripe style="width: 100%">
@@ -98,7 +101,7 @@
           <span :class="['submis-status', row.status]">{{ row.status?.charAt(0).toUpperCase() + row.status.slice(1) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="execution_time" :label="$t('submission.executTime')" />
+      <el-table-column prop="execution_time" :label="$t('submission.executTime')" width="160" />
       <!-- <el-table-column prop="input_file" :label="$t('submission.submittedFile')">
         <template #default="{ row }">
           <el-link type="primary" v-if="row.input_file" :href="row.input_file" target="_blank">Link</el-link>
@@ -130,8 +133,9 @@
           (row) => {
             return formatTime(row.submitted_at);
           }
-        " />
-      <el-table-column prop="is_public" :label="$t('submission.showOnLeaderboard')">
+        "
+        width="200" />
+      <el-table-column prop="is_public" :label="$t('submission.showOnLeaderboard')" width="170">
         <template #default="{ row }">
           <el-switch
             v-model="row.is_public"
@@ -196,6 +200,10 @@ const props = defineProps({
   challengeId: [String, Number],
   approved: Boolean,
   allowCancel: Boolean,
+  guidelines: {
+    type: String,
+    default: '',
+  },
   phases: {
     type: Array,
     default: [],

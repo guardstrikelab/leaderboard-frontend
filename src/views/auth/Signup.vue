@@ -12,10 +12,10 @@
     :validate-on-rule-change="false"
     require-asterisk-position="right">
     <el-form-item :label="$t('signup.username')" prop="username">
-      <el-input v-model.trim="form.username" :placeholder="$t('signup.usernamePH')" class="input-item" maxlength="32"></el-input>
+      <el-input v-model.trim="form.username" :placeholder="$t('signup.usernamePH')" class="input-item" maxlength="150"></el-input>
     </el-form-item>
     <el-form-item :label="$t('signup.email')" prop="email">
-      <el-input v-model.trim="form.email" :placeholder="$t('signup.emailPH')" type="email" class="input-item" maxlength="32"></el-input>
+      <el-input v-model.trim="form.email" :placeholder="$t('signup.emailPH')" type="email" class="input-item" maxlength="70"></el-input>
     </el-form-item>
     <el-form-item :label="$t('signup.password')" prop="password">
       <el-input
@@ -24,7 +24,7 @@
         v-model.trim="form.password"
         :placeholder="$t('signup.passwordPH')"
         @keypress.enter="validateForm"
-        maxlength="32"
+        maxlength="128"
         show-password></el-input>
     </el-form-item>
     <el-form-item :label="$t('signup.confirmpw')" prop="confirmpw">
@@ -34,7 +34,7 @@
         v-model.trim="form.confirmpw"
         :placeholder="$t('signup.confirmpwPH')"
         @keypress.enter="validateForm"
-        maxlength="32"
+        maxlength="128"
         show-password></el-input>
     </el-form-item>
     <div class="auth-submit-btn" @click="validateForm">{{ $t('signup.signup') }}</div>

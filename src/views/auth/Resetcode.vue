@@ -24,7 +24,7 @@
           v-model.trim="form.password"
           :placeholder="$t('reset.passwordPH')"
           @keypress.enter="validateForm"
-          maxlength="32"
+          maxlength="128"
           show-password></el-input>
       </el-form-item>
       <el-form-item :label="$t('reset.confirmpw')" prop="confirmpw">
@@ -34,7 +34,7 @@
           v-model.trim="form.confirmpw"
           :placeholder="$t('reset.confirmpwPH')"
           @keypress.enter="validateForm"
-          maxlength="32"
+          maxlength="128"
           show-password></el-input>
       </el-form-item>
       <div class="auth-submit-btn" @click="validateForm">{{ $t('reset.submit') }}</div>

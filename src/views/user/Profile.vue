@@ -9,10 +9,24 @@
     <div class="second-title">{{ $t('user.profile') }}</div>
     <div class="flex-between top">
       <div class="flex-center">
-        <el-avatar :size="64" :src="avatar" style="margin: 0 40px" />
+        <div class="avatar">
+          <el-avatar :size="64" :src="form.avatar || avatar" />
+          <el-upload
+            class="avatar-uploader"
+            name="image"
+            :action="uploadFileUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <svg class="icon" aria-hidden="true" style="font-size: 10px">
+              <use xlink:href="#icon-camera"></use>
+            </svg>
+          </el-upload>
+        </div>
+
         <div>
-          <div style="margin-bottom: 14px">{{ store.state.userInfo?.username }}</div>
-          <div>{{ store.state.userInfo?.email }}</div>
+          <div style="margin-bottom: 14px">{{ form.username }}</div>
+          <div>{{ form.email }}</div>
         </div>
       </div>
       <div class="top-right">
@@ -27,19 +41,19 @@
       </div>
       <div class="flex-between item">
         <div class="label">{{ $t('user.firstName') }}</div>
-        <el-input v-model.trim="form.first_name" placeholder="-" maxlength="32"></el-input>
+        <el-input v-model.trim="form.first_name" placeholder="-" maxlength="150"></el-input>
       </div>
       <div class="flex-between item">
         <div class="label">{{ $t('user.lastName') }}</div>
-        <el-input v-model.trim="form.last_name" placeholder="-" maxlength="32"></el-input>
+        <el-input v-model.trim="form.last_name" placeholder="-" maxlength="150"></el-input>
       </div>
       <div class="flex-between item">
         <div class="label">{{ $t('user.affilliate') }}</div>
-        <el-input v-model.trim="form.affiliation" placeholder="-" maxlength="32"></el-input>
+        <el-input v-model.trim="form.affiliation" placeholder="-" maxlength="512"></el-input>
       </div>
       <div class="flex-between item">
         <div class="label">GITHUB</div>
-        <el-input v-model.trim="form.github_url" placeholder="-" maxlength="32"></el-input>
+        <el-input v-model.trim="form.github_url" placeholder="-" maxlength="200"></el-input>
       </div>
     </div>
     <div class="footer">
@@ -61,7 +75,7 @@
           type="password"
           v-model.trim="passwordDialog.old_password"
           :placeholder="$t('user.oldPasswordPH')"
-          maxlength="32"
+          maxlength="128"
           show-password></el-input>
       </el-form-item>
       <el-form-item :label="$t('user.newPassword')" prop="new_password1">
@@ -69,7 +83,7 @@
           type="password"
           v-model.trim="passwordDialog.new_password1"
           :placeholder="$t('user.newPasswordPH')"
-          maxlength="32"
+          maxlength="128"
           show-password></el-input>
       </el-form-item>
       <el-form-item :label="$t('user.confirmpw')" prop="new_password2">
@@ -77,7 +91,7 @@
           type="password"
           v-model.trim="passwordDialog.new_password2"
           :placeholder="$t('user.confirmpwPH')"
-          maxlength="32"
+          maxlength="128"
           show-password
           @keypress.enter="passwordSubmit"></el-input>
       </el-form-item>
@@ -94,10 +108,10 @@
   </el-dialog>
 </template>
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { getUser, updateUser, updatePassword } from '@/api/user';
+import { updatePassword } from '@/api/user';
 import { useI18n } from 'vue-i18n';
 import avatar from '@/assets/images/avatar.png';
 
@@ -111,56 +125,76 @@ const goBack = () => {
     router.push('/');
   }
 };
-const form = reactive({
-  first_name: '',
-  last_name: '',
-  affiliation: '',
-  github_url: '',
-  google_scholar_url: '',
-  linkedin_url: '',
-});
+
+const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + '/api/web/upload_image/'); // 上传文件服务器地址
+
+const beforeAvatarUpload = (rawFile) => {
+  if (!rawFile.type.startsWith('image/')) {
+    ElMessage.error('Please select a picture!');
+    return false;
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('Picture size can not exceed 2MB!');
+    return false;
+  }
+  return true;
+};
+
+const handleAvatarSuccess = (response, uploadFile) => {
+  if (response.image_url) {
+    form.value.avatar = response.image_url;
+    save();
+  }
+};
+
+const form = ref({});
+
+watch(
+  () => store.state.userInfo,
+  (newVal, oldVal) => {
+    form.value.first_name = newVal.first_name;
+    form.value.last_name = newVal.last_name;
+    form.value.affiliation = newVal.affiliation;
+    form.value.github_url = newVal.github_url || '';
+    form.value.google_scholar_url = newVal.google_scholar_url || '';
+    form.value.linkedin_url = newVal.linkedin_url || '';
+    form.value.avatar = newVal.avatar;
+    form.value.username = newVal.username;
+    form.value.email = newVal.email;
+  },
+  { immediate: true, deep: true }
+);
+
 const percentage = computed(() => {
   let value = 2;
-  if (form.first_name) {
+  if (form.value.first_name) {
     value += 1;
   }
-  if (form.last_name) {
+  if (form.value.last_name) {
     value += 1;
   }
-  if (form.affiliation) {
+  if (form.value.affiliation) {
     value += 1;
   }
-  if (form.github_url) {
+  if (form.value.github_url) {
     value += 1;
   }
   return Math.round((100 * value) / 6);
 });
 const save = () => {
-  updateUser({
-    first_name: form.first_name,
-    last_name: form.last_name,
-    affiliation: form.affiliation,
-    github_url: form.github_url,
-    google_scholar_url: form.google_scholar_url,
-    linkedin_url: form.linkedin_url,
-  }).then((res) => {
-    ElMessage.success(t('user.profileUpdatedSuccess'));
-    queryUser();
-  });
+  store
+    .dispatch('updateUser', {
+      first_name: form.value.first_name,
+      last_name: form.value.last_name,
+      affiliation: form.value.affiliation,
+      github_url: form.value.github_url,
+      google_scholar_url: form.value.google_scholar_url,
+      linkedin_url: form.value.linkedin_url,
+      avatar: form.value.avatar,
+    })
+    .then((res) => {
+      ElMessage.success(t('user.profileUpdatedSuccess'));
+    });
 };
-const queryUser = () => {
-  getUser().then((res) => {
-    form.first_name = res.first_name;
-    form.last_name = res.last_name;
-    form.affiliation = res.affiliation;
-    form.github_url = res.github_url || '';
-    form.google_scholar_url = res.google_scholar_url || '';
-    form.linkedin_url = res.linkedin_url || '';
-  });
-};
-onMounted(() => {
-  queryUser();
-});
 
 const passwordDialog = reactive({
   visible: false,
@@ -259,5 +293,22 @@ const rules = reactive({
   left: initial;
   right: 0;
   top: -26px;
+}
+
+.avatar {
+  position: relative;
+  margin: 0 40px;
+  .avatar-uploader {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    :deep(.el-upload) {
+      width: 20px;
+      height: 20px;
+      background-color: #343c4d;
+      border-radius: 50%;
+      border: 1px solid #434d60;
+    }
+  }
 }
 </style>
