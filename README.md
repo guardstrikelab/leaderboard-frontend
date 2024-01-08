@@ -78,7 +78,7 @@ The steps are:
 
 7. For the corresponding backend service, please refer to [EvalAI](https://github.com/guardstrikelab/EvalAI.git) to deploy it, The following figure shows the relationship between projects.
 
-<p align="left"><img width="65%" src="docs/source/_static/img/arch.arena.png"/></p>
+<p align="left"><img width="90%" src="docs/source/_static/img/arch.arena.png"/></p>
 
 ## Contribution guidelines
 
