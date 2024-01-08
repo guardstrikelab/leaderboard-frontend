@@ -76,7 +76,9 @@ The steps are:
 
 6. That's it. Open web browser and hit the URL [http://127.0.0.1:8888](http://127.0.0.1:8888). 
 
-7. For the corresponding backend service, please refer to [EvalAI](https://github.com/guardstrikelab/EvalAI.git) to deploy it.
+7. For the corresponding backend service, please refer to [EvalAI](https://github.com/guardstrikelab/EvalAI.git) to deploy it, The following figure shows the relationship between projects.
+
+<p align="left"><img width="65%" src="docs/source/_static/img/arch.arena.png"/></p>
 
 ## Contribution guidelines
 
