@@ -3,7 +3,7 @@
 ------------------------------------------------------------------------------------------
 
 ![Static Badge](https://img.shields.io/badge/Arena-leaderboard_frontend-blue)
-![workflow](https://img.shields.io/github/actions/workflow/status/guardstrikelab/leaderboard-frontend/ci.yaml)
+![workflow](https://img.shields.io/github/actions/workflow/status/guardstrikelab/leaderboard-frontend/.github%2Fworkflows%2Fci.yml)
 ![issues](https://img.shields.io/github/issues/guardstrikelab/leaderboard-frontend)
 ![issues-closed](https://img.shields.io/github/issues-closed/guardstrikelab/leaderboard-frontend)
 ![issues-pr](https://img.shields.io/github/issues-pr/guardstrikelab/leaderboard-frontend)
