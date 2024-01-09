@@ -1,0 +1,1 @@
+import{_ as t,b5 as a,b as _,c,d as o,a9 as n,p as d,j as p}from"./index-54b6910d.js";const r=e=>(d("data-v-98ae77de"),e=e(),p(),e),i={class:"container"},l=r(()=>o("div",{class:"operation"},null,-1)),u={__name:"Index",setup(e){return(v,m)=>{const s=a("router-view");return _(),c("div",i,[l,o("main",null,[n(s)])])}}},I=t(u,[["__scopeId","data-v-98ae77de"]]);export{I as default};
