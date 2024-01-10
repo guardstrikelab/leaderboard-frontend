@@ -23,9 +23,6 @@ router.beforeEach((to, from, next) => {
               .then((res) => {
                 next({ path: '/' });
               })
-              .catch((err) => {
-                next({ path: '/' });
-              });
           });
       } else if (to.path.startsWith('/host')) {
         if (store.state.isHost === 1) {

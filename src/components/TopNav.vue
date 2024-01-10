@@ -5,7 +5,7 @@
     </div>
     <div class="top-right">
       <!-- <lang-select></lang-select> -->
-      <el-divider direction="vertical" style="border-color: #394253; height: 32px; margin: 0 24px" />
+      <!-- <el-divider direction="vertical" style="border-color: #394253; height: 32px; margin: 0 24px" /> -->
       <el-popover
         v-if="store.state.token"
         ref="popperRef"

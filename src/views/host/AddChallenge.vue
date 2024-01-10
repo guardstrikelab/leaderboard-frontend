@@ -11,7 +11,7 @@
         status-icon
         hide-required-asterisk>
         <el-form-item :label="$t('addChall.title')" prop="title">
-          <el-input v-model="ruleForm.title" />
+          <el-input v-model="ruleForm.title" maxlength="100" />
         </el-form-item>
         <el-form-item :label="$t('addChall.shortDesc')" prop="short_description">
           <editor v-model="ruleForm.short_description"></editor>
@@ -43,15 +43,15 @@
         <el-form-item :label="$t('addChall.lbDesc')" prop="leaderboard_description">
           <editor v-model="ruleForm.leaderboard_description"></editor>
         </el-form-item>
-        <el-form-item :label="$t('addChall.startDate')">
+        <el-form-item>
           <div class="flex-between" style="width: 100%">
-            <el-form-item prop="start_date" required>
+            <el-form-item :label="$t('addChall.startDate')" prop="start_date" required>
               <el-date-picker
                 v-model="ruleForm.start_date"
                 type="datetime"
                 placeholder="Select date and time"
                 value-format="YYYY-MM-DDTHH:mm:ssZ"
-                style="width: 300px" />
+                style="width: 500px" />
             </el-form-item>
             <el-form-item :label="$t('addChall.endDate')" prop="end_date" required>
               <el-date-picker
@@ -59,12 +59,13 @@
                 type="datetime"
                 placeholder="Select date and time"
                 value-format="YYYY-MM-DDTHH:mm:ssZ"
-                style="width: 300px" />
+                style="width: 500px" />
             </el-form-item>
           </div>
         </el-form-item>
-        <el-form-item :label="$t('addChall.published')" prop="published">
-          <radio-group v-model="ruleForm.published"></radio-group>
+        <el-form-item prop="published">
+          <span class="inline-title">{{ $t('addChall.published') }}</span>
+          <el-switch v-model="ruleForm.published" size="small" />
         </el-form-item>
       </el-form>
     </div>
@@ -77,7 +78,6 @@
 
 <script setup>
 import Editor from '@/components/Editor.vue';
-import RadioGroup from '@/components/RadioGroup.vue';
 import { onBeforeUnmount, ref, shallowRef, onMounted, reactive } from 'vue';
 import { createChallenge } from '@/api/host';
 import { getChallengeDetail } from '@/api/challenge';
@@ -230,6 +230,11 @@ onMounted(() => {
         color: #7f889a;
         line-height: 12px;
       }
+    }
+    .inline-title {
+      margin-right: 20px;
+      min-width: 250px;
+      display: inline-block;
     }
   }
 }

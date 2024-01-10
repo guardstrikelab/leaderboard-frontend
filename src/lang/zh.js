@@ -205,9 +205,7 @@ export default {
   },
   participate: {
     continue: '继续',
-    accept_text1: '请接受',
-    accept_text2: '规则和条款',
-    accept_text3: '才能参加比赛。',
+    accept_text: '请阅读并接受规则和条件。',
     accept_label: '我接受条款和条件',
   },
   submission: {

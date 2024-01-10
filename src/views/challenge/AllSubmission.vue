@@ -4,27 +4,27 @@
   </el-select>
   <el-table :data="submissionList" stripe style="width: 100%">
     <el-table-column fixed type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" />
-    <el-table-column prop="participant_team" :label="$t('submission.team')" width="250"> </el-table-column>
-    <el-table-column prop="created_by" :label="$t('submission.createdBy')"> </el-table-column>
-    <el-table-column prop="status" :label="$t('submission.status')">
+    <el-table-column fixed prop="participant_team" :label="$t('submission.team')" width="240"> </el-table-column>
+    <el-table-column prop="created_by" :label="$t('submission.createdBy')" width="130"> </el-table-column>
+    <el-table-column prop="status" :label="$t('submission.status')" width="100">
       <template #default="{ row }">
         <span :class="['submis-status', row.status]">{{ row.status.charAt(0).toUpperCase() + row.status.slice(1) }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="execution_time" :label="$t('submission.executTime')" width="160" />
-    <el-table-column prop="submission_result_file" :label="$t('submission.resultFile')">
+    <el-table-column prop="execution_time" :label="$t('submission.executTime')" width="180" />
+    <el-table-column prop="submission_result_file" :label="$t('submission.resultFile')" width="100">
       <template #default="{ row }">
         <el-link type="primary" v-if="row.submission_result_file" :href="row.submission_result_file" target="_blank">Link</el-link>
         <span v-else>-</span>
       </template>
     </el-table-column>
-    <el-table-column prop="stdout_file" :label="$t('submission.stdoutFile')">
+    <el-table-column prop="stdout_file" :label="$t('submission.stdoutFile')" width="100">
       <template #default="{ row }">
         <el-link type="primary" v-if="row.stdout_file" :href="row.stdout_file" target="_blank">Link</el-link>
         <span v-else>-</span>
       </template>
     </el-table-column>
-    <el-table-column prop="stderr_file" :label="$t('submission.stderrFile')">
+    <el-table-column prop="stderr_file" :label="$t('submission.stderrFile')" width="100">
       <template #default="{ row }">
         <el-link type="primary" v-if="row.stderr_file" :href="row.stderr_file" target="_blank">Link</el-link>
         <span v-else>-</span>
@@ -51,18 +51,24 @@
 
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
-import { challengePhase, getAllSubmissions } from '@/api/challenge';
+import { getAllSubmissions } from '@/api/challenge';
 import { formatTime } from '@/utils/tool';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-const props = defineProps(['challengeId']);
-const phases = ref([]);
+const props = defineProps({
+  challengeId: [String, Number],
+  phases: {
+    type: Array,
+    default: [],
+  },
+});
 
 onMounted(() => {
-  challengePhase(props.challengeId).then((res) => {
-    phases.value = res.results || [];
-  });
+  if (props.phases.length > 0) {
+    selectedPhaseId.value = props.phases[0].id;
+    getSubmissionList();
+  }
 });
 
 const selectedPhaseId = ref('');
@@ -91,67 +97,6 @@ const loadMore = () => {
 </script>
 
 <style lang="scss" scoped>
-.title {
-  font-weight: 700;
-}
-.describe {
-  line-height: 21px;
-}
-.selected-bar {
-  height: 48px;
-  background: #2a335e;
-  border-radius: 4px 4px 4px 4px;
-  border: 1px solid #4562e3;
-  padding: 0 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &.btw {
-    justify-content: space-between;
-  }
-}
-.phase-box {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 24px 20px;
-  &.more {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .phase-card {
-    height: 123px;
-    background: #282f3b;
-    border-radius: 2px 2px 2px 2px;
-    border: 1px solid #404b64;
-    padding: 24px 24px 24px 35px;
-    cursor: pointer;
-    .row {
-      height: 14px;
-      font-weight: 700;
-    }
-  }
-}
-.instr_con {
-  padding-left: 24px;
-}
-.command {
-  height: 32px;
-  background: #282f3b;
-  border-radius: 2px 2px 2px 2px;
-  border: 1px solid #404b64;
-  padding: 8px;
-  display: inline-block;
-  max-width: 80%;
-}
-.copy {
-  width: 32px;
-  height: 32px;
-  background: #404b64;
-  border-radius: 2px 2px 2px 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
 .submis-status {
   &::before {
     content: '';

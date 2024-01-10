@@ -12,29 +12,32 @@
         status-icon
         hide-required-asterisk>
         <el-form-item :label="$t('addPhase.name')" prop="name">
-          <el-input v-model="ruleForm.name" />
+          <el-input v-model="ruleForm.name" maxlength="100" />
         </el-form-item>
         <el-form-item :label="$t('addChall.desc')" prop="description">
           <editor v-model="ruleForm.description"></editor>
         </el-form-item>
-        <el-form-item :label="$t('addPhase.lbPublic')" prop="leaderboard_public">
-          <radio-group v-model="ruleForm.leaderboard_public"></radio-group>
+        <el-form-item prop="leaderboard_public">
+          <span class="inline-title">{{ $t('addPhase.lbPublic') }}</span>
+          <el-switch v-model="ruleForm.leaderboard_public" size="small" />
         </el-form-item>
-        <el-form-item :label="$t('addPhase.isPublic')" prop="is_public">
-          <radio-group v-model="ruleForm.is_public"></radio-group>
+        <el-form-item prop="is_public">
+          <span class="inline-title">{{ $t('addPhase.isPublic') }}</span>
+          <el-switch v-model="ruleForm.is_public" size="small" />
         </el-form-item>
-        <el-form-item :label="$t('addPhase.isSubmiPublic')" prop="is_submission_public">
-          <radio-group v-model="ruleForm.is_submission_public"></radio-group>
+        <el-form-item prop="is_submission_public">
+          <span class="inline-title">{{ $t('addPhase.isSubmiPublic') }}</span>
+          <el-switch v-model="ruleForm.is_submission_public" size="small" />
         </el-form-item>
-        <el-form-item :label="$t('addPhase.startDate')">
+        <el-form-item>
           <div class="flex-between" style="width: 100%">
-            <el-form-item prop="start_date" required>
+            <el-form-item :label="$t('addPhase.startDate')" prop="start_date" required>
               <el-date-picker
                 v-model="ruleForm.start_date"
                 type="datetime"
                 placeholder="Select date and time"
                 value-format="YYYY-MM-DDTHH:mm:ssZ"
-                style="width: 300px" />
+                style="width: 500px" />
             </el-form-item>
             <el-form-item :label="$t('addPhase.endDate')" prop="end_date" required>
               <el-date-picker
@@ -42,27 +45,29 @@
                 type="datetime"
                 placeholder="Select date and time"
                 value-format="YYYY-MM-DDTHH:mm:ssZ"
-                style="width: 300px" />
+                style="width: 500px" />
             </el-form-item>
           </div>
         </el-form-item>
         <el-form-item :label="$t('addPhase.codename')" prop="codename" required>
-          <el-input v-model="ruleForm.codename" />
+          <el-input v-model="ruleForm.codename" maxlength="100" />
         </el-form-item>
         <el-form-item :label="$t('addPhase.maxSubmiPerDay')" prop="max_submissions_per_day" required>
-          <el-input v-model="ruleForm.max_submissions_per_day" />
+          <el-input v-model="ruleForm.max_submissions_per_day" maxlength="32" />
         </el-form-item>
         <el-form-item :label="$t('addPhase.maxSubmiPerMonth')" prop="max_submissions_per_month" required>
-          <el-input v-model="ruleForm.max_submissions_per_month" />
+          <el-input v-model="ruleForm.max_submissions_per_month" maxlength="32" />
         </el-form-item>
         <el-form-item :label="$t('addPhase.maxSubmissions')" prop="max_submissions" required>
-          <el-input v-model="ruleForm.max_submissions" />
+          <el-input v-model="ruleForm.max_submissions" maxlength="32" />
         </el-form-item>
-        <el-form-item :label="$t('addPhase.isRestrictedToSelectOneSubmission')" prop="is_restricted_to_select_one_submission">
-          <radio-group v-model="ruleForm.is_restricted_to_select_one_submission"></radio-group>
+        <el-form-item prop="is_restricted_to_select_one_submission">
+          <span class="inline-title">{{ $t('addPhase.isRestrictedToSelectOneSubmission') }}</span>
+          <el-switch v-model="ruleForm.is_restricted_to_select_one_submission" size="small" />
         </el-form-item>
-        <el-form-item :label="$t('addPhase.isPartialSubmissionEvaluationEnabled')" prop="is_partial_submission_evaluation_enabled">
-          <radio-group v-model="ruleForm.is_partial_submission_evaluation_enabled"></radio-group>
+        <el-form-item prop="is_partial_submission_evaluation_enabled">
+          <span class="inline-title">{{ $t('addPhase.isPartialSubmissionEvaluationEnabled') }}</span>
+          <el-switch v-model="ruleForm.is_partial_submission_evaluation_enabled" size="small" />
         </el-form-item>
         <el-form-item :label="$t('addPhase.allowedSubmissionFileTypes')" prop="allowed_submission_file_types" required>
           <el-input v-model="ruleForm.allowed_submission_file_types" placeholder="eg: .json, .zip" />
@@ -215,6 +220,11 @@ onMounted(() => {
       line-height: 18px;
       text-align: center;
       margin-bottom: 36px;
+    }
+    .inline-title {
+      margin-right: 20px;
+      min-width: 260px;
+      display: inline-block;
     }
   }
 }

@@ -19,7 +19,10 @@
           <overview :detailInfo="detailInfo" :phases="phases"></overview>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.participate')" name="participate" v-if="!teamDetail">
-          <participate :challengeId="challengeId" @callback="getPartTeam('submission')" @openTerm="openTerm"></participate>
+          <participate
+            :challengeId="challengeId"
+            :termsConditions="detailInfo.terms_and_conditions"
+            @callback="getPartTeam('submission')"></participate>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.submission')" name="submission" v-else>
           <submission
@@ -37,7 +40,7 @@
           <approval :challengeId="challengeId"></approval>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.allSubmission')" name="allSubmission" v-if="isChallengeHost">
-          <all-submission :challengeId="challengeId"></all-submission>
+          <all-submission :challengeId="challengeId" :phases="phases"></all-submission>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -81,13 +84,6 @@ const getPartTeam = (tabId) => {
   });
 };
 
-const openTerm = () => {
-  activeName.value = 'overview';
-  setTimeout(() => {
-    let dom = document.querySelector('#term');
-    dom && dom.scrollIntoView();
-  }, 200);
-};
 const clearPartTeam = (tabId) => {
   teamDetail.value = undefined;
   activeName.value = tabId;

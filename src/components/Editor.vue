@@ -29,6 +29,7 @@ const toolbarConfig = {
 };
 const editorConfig = {
   placeholder: '',
+  maxLength: 5000,
   MENU_CONF: {
     uploadImage: {
       server: import.meta.env.VITE_APP_BASE_API + '/api/web/upload_image/',

@@ -393,6 +393,33 @@ body {
   }
 }
 
+// 折叠面板
+.el-collapse.oa-collapse {
+  border: none;
+  margin-top: -16px;
+  // margin-bottom: 24px;
+  --el-collapse-border-color: rgba(67, 77, 96, 0.6);
+  .el-collapse-item__header {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .el-collapse-item__wrap {
+    border-bottom-color: rgba(67, 77, 96, 0.6);
+    .el-collapse-item__content {
+      font-size: 14px;
+      color: var(--text-color);
+    }
+  }
+  .el-collapse-item:nth-last-child(1) {
+    .el-collapse-item__wrap {
+      border-bottom: none;
+    }
+    .el-collapse-item__header {
+      border-bottom-color: transparent;
+    }
+  }
+}
+
 // 已选择项tag框
 .custom-selected-tag {
   &.el-tag {

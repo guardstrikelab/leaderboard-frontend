@@ -1,189 +1,180 @@
 <template>
-  <div class="title mb24">{{ $t('submission.guidelines') }}</div>
-  <div class="mb24">
-    <div v-html="guidelines" class="editor-content-view"></div>
-  </div>
-
-  <div v-if="!approved">
-    <div class="title mb24">
-      <span>{{ $t('submission.deregisterChallenge') }}:</span>
-      <el-button type="primary" @click="deregister" class="ml16">{{ $t('submission.deregister') }}</el-button>
-    </div>
-    <div class="describe mb24">{{ $t('submission.notApproved') }}</div>
-  </div>
-
-  <template v-else>
-    <div class="title mb24 mt32">{{ $t('submission.submission') }}</div>
-    <div class="mb24">{{ $t('submission.selectPhase') }}</div>
-
-    <div class="selected-bar btw mb16" v-if="curPhase.id">
-      <div>
-        <span class="label mr8">{{ $t('submission.todayRemain') }}:</span>
-        <span class="value">{{ curPhase.max_submissions_per_day }}</span>
+  <el-collapse :model-value="['1', '2', '3', '4']" class="oa-collapse">
+    <el-collapse-item :title="$t('submission.guidelines')" name="1">
+      <div v-html="guidelines" class="editor-content-view"></div>
+      <div v-if="!approved" class="mt24">
+        <div class="title mb24">
+          <span>{{ $t('submission.deregisterChallenge') }}:</span>
+          <el-button type="primary" @click="deregister" class="ml16">{{ $t('submission.deregister') }}</el-button>
+        </div>
+        <div class="describe mb24">{{ $t('submission.notApproved') }}</div>
       </div>
-      <div>
-        <span class="label mr8">{{ $t('submission.monthRemain') }}:</span>
-        <span class="value">{{ curPhase.max_submissions_per_month }}</span>
-      </div>
-      <div>
-        <span class="label mr8">{{ $t('submission.totalRemain') }}:</span>
-        <span class="value">{{ curPhase.max_submissions }}</span>
-      </div>
-    </div>
-    <div class="selected-bar mb16" v-else>
-      <span>—</span>
-    </div>
-    <div class="phase-box mb32" :class="{ more: phases.length > 1 }">
-      <div class="phase-card" v-for="item in phases" :key="item" @click="handleSelect(item)">
-        <div class="flex-between mb16">
-          <div class="second-title">{{ item.name }}</div>
-          <el-radio class="custom-radio" :model-value="curPhase.id" :label="item.id"></el-radio>
-        </div>
-        <div class="row mb16">
-          <span class="label mr8">{{ $t('submission.startDate') }}:</span>
-          <span class="value">{{ formatTime(item.start_date) }}</span>
-        </div>
-        <div class="row">
-          <span class="label mr8">{{ $t('submission.endDate') }}:</span>
-          <span class="value">{{ formatTime(item.end_date) }}</span>
-        </div>
-      </div>
-    </div>
-    <div v-if="curPhase.id">
-      <div class="title mb24">{{ $t('submission.instruction') }}</div>
-      <div class="instr_con mb32">
-        <div class="subTitle mb16">1. {{ $t('submission.install') }}</div>
-        <div class="flex-center mb24">
-          <span class="command ellipsis">$ {{ commandTxt1 }}</span>
-          <span class="copy ml16" v-copyText="{ txt: commandTxt1, msg: $t('submission.copySuccess') }">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-copy"></use>
-            </svg>
-          </span>
-        </div>
-
-        <div class="subTitle mb16">2. {{ $t('submission.addToken') }}</div>
-        <div class="flex-center mb24">
-          <span class="command ellipsis">$ {{ commandTxt2 }}</span>
-          <span class="copy ml16" v-copyText="{ txt: commandTxt2, msg: $t('submission.copySuccess') }">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-copy"></use>
-            </svg>
-          </span>
-        </div>
-        <div class="subTitle mb16">3. {{ $t('submission.submission') }}</div>
-        <div class="flex-center mb24">
-          <span class="command ellipsis">$ {{ commandTxt3 }}</span>
-          <span class="copy ml16" v-copyText="{ txt: commandTxt3, msg: $t('submission.copySuccess') }">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-copy"></use>
-            </svg>
-          </span>
-        </div>
-        <div class="subTitle mb24">4. {{ $t('submission.flagTxt') }}</div>
-        <div class="subTitle flex-center">
-          <span> 5. {{ $t('submission.forMore') }}</span>
-          <el-link type="primary" :underline="false" class="ml5" href="https://github.com/guardstrikelab/arena-cli" target="_blank">
-            {{ $t('submission.referDocument') }}
-          </el-link>
-        </div>
-      </div>
-    </div>
-
-    <div class="title mb24">{{ $t('submission.list') }}</div>
-    <el-select v-model="selectedPhaseId" class="mb16" :placeholder="$t('submission.phasePH')" @change="handleChangePhase" style="width: 300px">
-      <el-option v-for="item in phases" :key="item.id" :label="item.name" :value="item.id" />
-    </el-select>
-    <el-table :data="submissionList" stripe style="width: 100%">
-      <el-table-column fixed type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" />
-      <el-table-column prop="status" :label="$t('submission.status')">
-        <template #default="{ row }">
-          <span :class="['submis-status', row.status]">{{ row.status?.charAt(0).toUpperCase() + row.status.slice(1) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="execution_time" :label="$t('submission.executTime')" width="160" />
-      <!-- <el-table-column prop="input_file" :label="$t('submission.submittedFile')">
-        <template #default="{ row }">
-          <el-link type="primary" v-if="row.input_file" :href="row.input_file" target="_blank">Link</el-link>
-          <span v-else>-</span>
-        </template>
-      </el-table-column> -->
-      <el-table-column prop="submission_result_file" :label="$t('submission.resultFile')">
-        <template #default="{ row }">
-          <el-link type="primary" v-if="row.submission_result_file" :href="row.submission_result_file" target="_blank">Link</el-link>
-          <span v-else>-</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="stdout_file" :label="$t('submission.stdoutFile')">
-        <template #default="{ row }">
-          <el-link type="primary" v-if="row.stdout_file" :href="row.stdout_file" target="_blank">Link</el-link>
-          <span v-else>-</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="stderr_file" :label="$t('submission.stderrFile')">
-        <template #default="{ row }">
-          <el-link type="primary" v-if="row.stderr_file" :href="row.stderr_file" target="_blank">Link</el-link>
-          <span v-else>-</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="submitted_at"
-        :label="$t('submission.submittedAt')"
-        :formatter="
-          (row) => {
-            return formatTime(row.submitted_at);
-          }
-        "
-        width="200" />
-      <el-table-column prop="is_public" :label="$t('submission.showOnLeaderboard')" width="170">
-        <template #default="{ row }">
-          <el-switch
-            v-model="row.is_public"
-            size="small"
-            :before-change="
-              () => {
-                return beforeChange(row);
-              }
-            " />
-          <span class="ml8">{{ row.is_public ? $t('submission.public') : $t('submission.private') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" :label="$t('operate')">
-        <template #default="{ row }">
-          <div class="flex">
-            <el-tooltip class="box-item" effect="light" :content="$t('cancel')" placement="top-start">
-              <span class="icon-button mr8" @click="cancelSubmis(row)">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-Cancel"></use>
-                </svg>
-              </span>
-            </el-tooltip>
-            <el-tooltip class="box-item" effect="light" :content="$t('submission.rerun')" placement="top-start" v-if="store.state.isHost === 1">
-              <span class="icon-button mr8" @click="reRun(row)">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-load"></use>
-                </svg>
-              </span>
-            </el-tooltip>
-            <el-tooltip class="box-item" effect="light" :content="$t('submission.resume')" placement="top-start">
-              <span class="icon-button" @click="resume(row)" :class="{ disabled: row.status !== 'failed' }">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-kaishi"></use>
-                </svg>
-              </span>
-            </el-tooltip>
+    </el-collapse-item>
+    <template v-if="approved">
+      <el-collapse-item :title="$t('submission.submission')" name="2">
+        <div class="mb24">{{ $t('submission.selectPhase') }}</div>
+        <div class="selected-bar btw mb16" v-if="curPhase.id">
+          <div>
+            <span class="label mr8">{{ $t('submission.todayRemain') }}:</span>
+            <span class="value">{{ curPhase.max_submissions_per_day }}</span>
           </div>
-        </template>
-      </el-table-column>
-    </el-table>
+          <div>
+            <span class="label mr8">{{ $t('submission.monthRemain') }}:</span>
+            <span class="value">{{ curPhase.max_submissions_per_month }}</span>
+          </div>
+          <div>
+            <span class="label mr8">{{ $t('submission.totalRemain') }}:</span>
+            <span class="value">{{ curPhase.max_submissions }}</span>
+          </div>
+        </div>
+        <div class="selected-bar mb16" v-else>
+          <span>—</span>
+        </div>
+        <div class="phase-box mb32" :class="{ more: phases.length > 1 }">
+          <div class="phase-card" v-for="item in phases" :key="item" @click="handleSelect(item)">
+            <div class="flex-between mb16">
+              <div class="second-title">{{ item.name }}</div>
+              <el-radio class="custom-radio" :model-value="curPhase.id" :label="item.id"></el-radio>
+            </div>
+            <div class="row mb16">
+              <span class="label mr8">{{ $t('submission.startDate') }}:</span>
+              <span class="value">{{ formatTime(item.start_date) }}</span>
+            </div>
+            <div class="row">
+              <span class="label mr8">{{ $t('submission.endDate') }}:</span>
+              <span class="value">{{ formatTime(item.end_date) }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="mb24">{{ $t('submission.instruction') }}</div>
+        <div class="instr_con mb16">
+          <div class="subTitle mb16">1. {{ $t('submission.install') }}</div>
+          <div class="flex-center mb24">
+            <span class="command ellipsis">$ {{ commandTxt1 }}</span>
+            <span class="copy ml16" v-copyText="{ txt: commandTxt1, msg: $t('submission.copySuccess') }">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-copy"></use>
+              </svg>
+            </span>
+          </div>
 
-    <el-button link class="mt24" @click="loadMore" v-if="pager.total > pager.pageNum * pager.pageSize">
-      <svg class="icon mr8" aria-hidden="true">
-        <use xlink:href="#icon-load"></use>
-      </svg>
-      <span>{{ $t('loadMore') }}...</span>
-    </el-button>
-  </template>
+          <div class="subTitle mb16">2. {{ $t('submission.addToken') }}</div>
+          <div class="flex-center mb24">
+            <span class="command ellipsis">$ {{ commandTxt2 }}</span>
+            <span class="copy ml16" v-copyText="{ txt: commandTxt2, msg: $t('submission.copySuccess') }">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-copy"></use>
+              </svg>
+            </span>
+          </div>
+          <div class="subTitle mb16">3. {{ $t('submission.submission') }}</div>
+          <div class="flex-center mb24">
+            <span class="command ellipsis">$ {{ commandTxt3 }}</span>
+            <span class="copy ml16" v-copyText="{ txt: commandTxt3, msg: $t('submission.copySuccess') }">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-copy"></use>
+              </svg>
+            </span>
+          </div>
+          <div class="subTitle mb24">4. {{ $t('submission.flagTxt') }}</div>
+          <div class="subTitle flex-center">
+            <span> 5. {{ $t('submission.forMore') }}</span>
+            <el-link type="primary" :underline="false" class="ml5" href="https://github.com/guardstrikelab/arena-cli" target="_blank">
+              {{ $t('submission.referDocument') }}
+            </el-link>
+          </div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item :title="$t('submission.list')" name="3">
+        <el-select v-model="selectedPhaseId" class="mb16" :placeholder="$t('submission.phasePH')" @change="handleChangePhase" style="width: 300px">
+          <el-option v-for="item in phases" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
+        <el-table :data="submissionList" stripe style="width: 100%">
+          <el-table-column fixed type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" />
+          <el-table-column prop="status" :label="$t('submission.status')">
+            <template #default="{ row }">
+              <span :class="['submis-status', row.status]">{{ row.status?.charAt(0).toUpperCase() + row.status.slice(1) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="execution_time" :label="$t('submission.executTime')" width="180" />
+          <el-table-column prop="submission_result_file" :label="$t('submission.resultFile')">
+            <template #default="{ row }">
+              <el-link type="primary" v-if="row.submission_result_file" :href="row.submission_result_file" target="_blank">Link</el-link>
+              <span v-else>-</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="stdout_file" :label="$t('submission.stdoutFile')">
+            <template #default="{ row }">
+              <el-link type="primary" v-if="row.stdout_file" :href="row.stdout_file" target="_blank">Link</el-link>
+              <span v-else>-</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="stderr_file" :label="$t('submission.stderrFile')">
+            <template #default="{ row }">
+              <el-link type="primary" v-if="row.stderr_file" :href="row.stderr_file" target="_blank">Link</el-link>
+              <span v-else>-</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="submitted_at"
+            :label="$t('submission.submittedAt')"
+            :formatter="
+              (row) => {
+                return formatTime(row.submitted_at);
+              }
+            "
+            width="200" />
+          <el-table-column prop="is_public" :label="$t('submission.showOnLeaderboard')" width="170">
+            <template #default="{ row }">
+              <el-switch
+                v-model="row.is_public"
+                size="small"
+                :before-change="
+                  () => {
+                    return beforeChange(row);
+                  }
+                " />
+              <span class="ml8">{{ row.is_public ? $t('submission.public') : $t('submission.private') }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" :label="$t('operate')">
+            <template #default="{ row }">
+              <div class="flex">
+                <el-tooltip class="box-item" effect="light" :content="$t('cancel')" placement="top-start">
+                  <span class="icon-button mr8" @click="cancelSubmis(row)">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-Cancel"></use>
+                    </svg>
+                  </span>
+                </el-tooltip>
+                <el-tooltip class="box-item" effect="light" :content="$t('submission.rerun')" placement="top-start" v-if="store.state.isHost === 1">
+                  <span class="icon-button mr8" @click="reRun(row)">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-load"></use>
+                    </svg>
+                  </span>
+                </el-tooltip>
+                <el-tooltip class="box-item" effect="light" :content="$t('submission.resume')" placement="top-start">
+                  <span class="icon-button" @click="resume(row)" :class="{ disabled: row.status !== 'failed' }">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-kaishi"></use>
+                    </svg>
+                  </span>
+                </el-tooltip>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <el-button link class="mt24" @click="loadMore" v-if="pager.total > pager.pageNum * pager.pageSize">
+          <svg class="icon mr8" aria-hidden="true">
+            <use xlink:href="#icon-load"></use>
+          </svg>
+          <span>{{ $t('loadMore') }}...</span>
+        </el-button>
+      </el-collapse-item>
+    </template>
+  </el-collapse>
 </template>
 
 <script setup>
@@ -217,6 +208,8 @@ const handleSelect = (item) => {
 onMounted(() => {
   if (props.phases.length > 0) {
     curPhase.value = props.phases[0];
+    selectedPhaseId.value = props.phases[0].id;
+    getSubmissionList();
   }
 });
 
@@ -307,6 +300,11 @@ const loadMore = () => {
   justify-content: center;
   &.btw {
     justify-content: space-between;
+  }
+  .value {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 20px;
   }
 }
 .phase-box {

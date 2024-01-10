@@ -93,7 +93,7 @@ export default createStore({
             removeToken();
             removeJwtToken();
             commit('clearStore');
-            reject(error);
+            resolve();
           });
       });
     },

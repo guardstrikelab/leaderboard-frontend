@@ -111,6 +111,8 @@ service.interceptors.response.use(
       message = getErrMsg(response.data.details);
     } else if (response.status == 400 && response.data?.error) {
       message = getErrMsg(response.data.error);
+    } else if (response.status == 400 && response.data?.non_field_errors?.length > 0) {
+      message = getErrMsg(response.data.non_field_errors[0]);
     } else if (response.status == 401 && response.data?.error) {
       message = getErrMsg(response.data.error);
     } else if (response.status == 401 && response.data?.detail) {
