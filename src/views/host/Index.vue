@@ -234,18 +234,23 @@ const pagerChange = (e) => {
   getList();
 };
 const getList = () => {
+  const loading = ElLoading.service();
   getAllChallenges('all', 'all', 'all', {
     page: pager.pageNum,
     title: searchValue.value,
-  }).then((res) => {
-    let resData = res.results || [];
-    resData.forEach((item) => {
-      item.phaseList = [];
-      item.loadPhases = false;
+  })
+    .then((res) => {
+      let resData = res.results || [];
+      resData.forEach((item) => {
+        item.phaseList = [];
+        item.loadPhases = false;
+      });
+      challengeList.value = resData;
+      pager.total = res.count;
+    })
+    .finally((res) => {
+      loading.close();
     });
-    challengeList.value = resData;
-    pager.total = res.count;
-  });
 };
 
 const eidtChallenge = (row) => {

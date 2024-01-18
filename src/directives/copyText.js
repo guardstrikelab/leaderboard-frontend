@@ -4,7 +4,7 @@
  */
 
 export default {
-  beforeMount(el, { value, arg }) {
+  mounted(el, { value }) {
     el.$copyValue = value.txt;
     el.$resMessage = value.msg;
     const handler = () => {
@@ -13,6 +13,11 @@ export default {
     };
     el.addEventListener('click', handler);
     el.$destroyCopy = () => el.removeEventListener('click', handler);
+  },
+  // 在绑定元素的父组件及他自己的所有子节点都更新后调用
+  updated(el, { value }) {
+    el.$copyValue = value.txt;
+    el.$resMessage = value.msg;
   },
 };
 

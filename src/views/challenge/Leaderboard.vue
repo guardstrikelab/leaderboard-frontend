@@ -18,7 +18,7 @@
   <el-table :data="leaderboardList" stripe style="width: 100%" header-cell-class-name="thBg">
     <el-table-column fixed prop="rank" :label="$t('leaderboard.rank')" width="80" />
     <el-table-column fixed sortable prop="submission__participant_team__team_name" :label="$t('leaderboard.team')" width="250" />
-    <el-table-column sortable :label="label" v-for="(label, i) in labels" :key="label" width="280">
+    <el-table-column sortable :label="label" v-for="(label, i) in labels" :key="label" width="290">
       <template #default="{ row }">
         {{ row.result[i] }}
       </template>

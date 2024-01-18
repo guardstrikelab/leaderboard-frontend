@@ -15,7 +15,7 @@
         @size-change="getTeams"
         @current-change="getTeams"
         class="mt24 oa-pagination" />
-      <el-button type="primary" size="large" class="long-button mt24" :disabled="!activeId" @click="participate">
+      <el-button type="primary" size="large" class="long-button mt24" :disabled="!activeId" @click="handleContinue">
         {{ $t('participate.continue') }}
       </el-button>
     </div>
@@ -58,16 +58,23 @@
     <div class="accept-title mb24">
       {{ $t('participate.accept_text') }}
     </div>
-    <div class="accept-con small-scrollbar">
+    <div class="accept-con small-scrollbar" v-scroll-bottom="handleScrollBottom">
       <div v-html="termsConditions" class="editor-content-view"></div>
     </div>
     <el-checkbox v-model="acceptDialog.accept" :label="$t('participate.accept_label')" size="small" />
     <template #footer>
-      <div class="between">
-        <div></div>
+      <div class="flex-between">
+        <div class="note">
+          <svg class="icon mr8" aria-hidden="true" style="font-size: 12px">
+            <use xlink:href="#icon-zhushi"></use>
+          </svg>
+          {{ $t('participate.note') }}
+        </div>
         <div>
           <el-button @click="acceptDialog.visible = false" text bg>{{ $t('cancel') }}</el-button>
-          <el-button type="primary" :disabled="!acceptDialog.accept" @click="confirmParticipate"> {{ $t('challenge.participate') }} </el-button>
+          <el-button type="primary" :disabled="!acceptDialog.accept || !acceptDialog.isReadingFinished" @click="confirmParticipate">
+            {{ $t('challenge.participate') }}
+          </el-button>
         </div>
       </div>
     </template>
@@ -141,10 +148,34 @@ const saveTeam = () => {
 const acceptDialog = reactive({
   visible: false,
   accept: false,
+  isReadingFinished: false,
 });
-const participate = () => {
+const handleContinue = () => {
   acceptDialog.visible = true;
   acceptDialog.accept = false;
+};
+const handleScrollBottom = () => {
+  acceptDialog.isReadingFinished = true;
+};
+const vScrollBottom = {
+  mounted(el, binding) {
+    setTimeout(() => {
+      if (el.clientHeight === el.scrollHeight) {
+        binding.value();
+      }
+    });
+
+    el.addEventListener('scroll', () => {
+      const scrollTop = el.scrollTop; // 滚动条距离容器顶部的距离
+      const scrollHeight = el.scrollHeight; // 容器内容的总高度
+      const clientHeight = el.clientHeight; // 容器可见区域的高度
+
+      if (scrollTop + clientHeight >= scrollHeight) {
+        // 滚动条已经到达底部
+        binding.value(); // 调用绑定的方法
+      }
+    });
+  },
 };
 
 const confirmParticipate = () => {
@@ -260,6 +291,12 @@ const goLogin = () => {
   border: 1px dashed #555f6e;
   padding: 16px;
   margin-bottom: 20px;
+}
+.note {
+  color: #7f889a;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
 }
 .el-checkbox :deep(.el-checkbox__label) {
   color: #7f889a;

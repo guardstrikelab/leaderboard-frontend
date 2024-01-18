@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "38977502",
+      "name": "zhushi",
+      "font_class": "zhushi",
+      "unicode": "e6f5",
+      "unicode_decimal": 59125
+    },
+    {
+      "icon_id": "38957207",
+      "name": "host",
+      "font_class": "host",
+      "unicode": "e6f2",
+      "unicode_decimal": 59122
+    },
+    {
+      "icon_id": "38925356",
+      "name": "Participant",
+      "font_class": "Participant",
+      "unicode": "e6f1",
+      "unicode_decimal": 59121
+    },
+    {
       "icon_id": "38733881",
       "name": "camera",
       "font_class": "camera",

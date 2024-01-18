@@ -69,9 +69,9 @@
           <span class="inline-title">{{ $t('addPhase.isPartialSubmissionEvaluationEnabled') }}</span>
           <el-switch v-model="ruleForm.is_partial_submission_evaluation_enabled" size="small" />
         </el-form-item>
-        <el-form-item :label="$t('addPhase.allowedSubmissionFileTypes')" prop="allowed_submission_file_types" required>
+        <!-- <el-form-item :label="$t('addPhase.allowedSubmissionFileTypes')" prop="allowed_submission_file_types" required>
           <el-input v-model="ruleForm.allowed_submission_file_types" placeholder="eg: .json, .zip" />
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
     </div>
     <el-button style="width: 180px; border-radius: 2px" type="primary" @click="submitForm(ruleFormRef)">
@@ -159,7 +159,7 @@ const submitForm = async (formEl) => {
         max_submissions: ruleForm.max_submissions,
         is_restricted_to_select_one_submission: ruleForm.is_restricted_to_select_one_submission,
         is_partial_submission_evaluation_enabled: ruleForm.is_partial_submission_evaluation_enabled,
-        allowed_submission_file_types: ruleForm.allowed_submission_file_types,
+        // allowed_submission_file_types: ruleForm.allowed_submission_file_types,
       }).then((res) => {
         ElMessage.success(ruleForm.id !== undefined ? t('addPhase.updateSuccess') : t('addPhase.createSuccess'));
         router.push('/host');

@@ -133,3 +133,13 @@ export const getChallengeHomeDetail = () =>
       isToken: false,
     },
   });
+
+// 查询已参加的比赛
+export const getParticipatedChallenge = () =>
+  service({
+    method: 'get',
+    url: `/api/participants/participant_teams/user`,
+    headers: {
+      noMessage: true,
+    },
+  });

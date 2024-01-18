@@ -63,9 +63,29 @@
             </el-form-item>
           </div>
         </el-form-item>
+
+        <el-form-item>
+          <div class="flex-between" style="width: 100%">
+            <el-form-item :label="$t('addChall.queue')" prop="queue">
+              <el-input v-model="ruleForm.queue" maxlength="200" style="width: 500px" />
+            </el-form-item>
+            <el-form-item :label="$t('addChall.queueAwsRegion')" prop="queue_aws_region">
+              <el-input v-model="ruleForm.queue_aws_region" maxlength="50" style="width: 500px" />
+            </el-form-item>
+          </div>
+        </el-form-item>
+
         <el-form-item prop="published">
-          <span class="inline-title">{{ $t('addChall.published') }}</span>
-          <el-switch v-model="ruleForm.published" size="small" />
+          <div class="flex-center">
+            <span class="inline-title">{{ $t('addChall.published') }}</span>
+            <el-switch v-model="ruleForm.published" size="small" />
+            <span class="note ml16">
+              <svg class="icon" aria-hidden="true" style="font-size: 12px">
+                <use xlink:href="#icon-zhushi"></use>
+              </svg>
+              {{ $t('addChall.publishNote') }}
+            </span>
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -104,6 +124,8 @@ const ruleForm = reactive({
   is_docker_based: false,
   start_date: '',
   end_date: '',
+  queue: '',
+  queue_aws_region: '',
   published: false,
 });
 
@@ -140,6 +162,8 @@ const rules = reactive({
   terms_and_conditions: [{ validator: validatehtml, trigger: 'blur' }],
   submission_guidelines: [{ validator: validatehtml, trigger: 'blur' }],
   leaderboard_description: [{ validator: validatehtml, trigger: 'blur' }],
+  queue: [{ required: true, message: 'Queue is required', trigger: 'blur' }],
+  queue_aws_region: [{ required: true, message: 'Queue aws region is required', trigger: 'blur' }],
 });
 
 const submitForm = async (formEl) => {
@@ -156,6 +180,8 @@ const submitForm = async (formEl) => {
       formData.append('leaderboard_description', ruleForm.leaderboard_description);
       formData.append('start_date', ruleForm.start_date);
       formData.append('end_date', ruleForm.end_date);
+      formData.append('queue', ruleForm.queue);
+      formData.append('queue_aws_region', ruleForm.queue_aws_region);
       formData.append('published', ruleForm.published);
       formData.append('image', ruleForm.image);
       if (ruleForm.id) {
@@ -190,6 +216,8 @@ onMounted(() => {
       ruleForm.leaderboard_description = res.leaderboard_description;
       ruleForm.start_date = res.start_date;
       ruleForm.end_date = res.end_date;
+      ruleForm.queue = res.queue;
+      ruleForm.queue_aws_region = res.queue_aws_region;
       ruleForm.published = res.published;
       ruleForm.id = res.id;
       ruleForm.image = res.image;
@@ -235,6 +263,10 @@ onMounted(() => {
       margin-right: 20px;
       min-width: 250px;
       display: inline-block;
+    }
+    .note {
+      color: #7f889a;
+      font-size: 12px;
     }
   }
 }

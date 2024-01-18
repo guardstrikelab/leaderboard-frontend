@@ -90,26 +90,27 @@
           <el-option v-for="item in phases" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
         <el-table :data="submissionList" stripe style="width: 100%">
-          <el-table-column fixed type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" />
-          <el-table-column prop="status" :label="$t('submission.status')">
+          <el-table-column fixed type="index" label="#" width="60" :index="(i) => (i + 1).toString().padStart(2, '0')" />
+          <el-table-column fixed prop="id" :label="$t('submission.submissionId')" width="130" />
+          <el-table-column prop="status" :label="$t('submission.status')" width="100">
             <template #default="{ row }">
               <span :class="['submis-status', row.status]">{{ row.status?.charAt(0).toUpperCase() + row.status.slice(1) }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="execution_time" :label="$t('submission.executTime')" width="180" />
-          <el-table-column prop="submission_result_file" :label="$t('submission.resultFile')">
+          <el-table-column prop="submission_result_file" :label="$t('submission.resultFile')" width="100">
             <template #default="{ row }">
               <el-link type="primary" v-if="row.submission_result_file" :href="row.submission_result_file" target="_blank">Link</el-link>
               <span v-else>-</span>
             </template>
           </el-table-column>
-          <el-table-column prop="stdout_file" :label="$t('submission.stdoutFile')">
+          <el-table-column prop="stdout_file" :label="$t('submission.stdoutFile')" width="100">
             <template #default="{ row }">
               <el-link type="primary" v-if="row.stdout_file" :href="row.stdout_file" target="_blank">Link</el-link>
               <span v-else>-</span>
             </template>
           </el-table-column>
-          <el-table-column prop="stderr_file" :label="$t('submission.stderrFile')">
+          <el-table-column prop="stderr_file" :label="$t('submission.stderrFile')" width="100">
             <template #default="{ row }">
               <el-link type="primary" v-if="row.stderr_file" :href="row.stderr_file" target="_blank">Link</el-link>
               <span v-else>-</span>

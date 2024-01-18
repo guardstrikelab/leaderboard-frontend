@@ -107,6 +107,7 @@ export default {
     please: '请',
     login: '登录',
     partiChall: '参与比赛。',
+    participated: '已参加',
   },
   team: {
     team: '团队',
@@ -207,6 +208,7 @@ export default {
     continue: '继续',
     accept_text: '请阅读并接受规则和条件。',
     accept_label: '我接受条款和条件',
+    note: '一定要仔细完整地阅读。',
   },
   submission: {
     guidelines: '投稿须知',
@@ -254,6 +256,7 @@ export default {
     cancelSuccess: '提交成功取消!',
     rerun: '重新执行',
     resume: '恢复',
+    submissionId: '提交ID',
   },
   leaderboard: {
     team: '团队',
@@ -289,9 +292,12 @@ export default {
     lbDesc: '排行榜说明',
     startDate: '开始日期',
     endDate: '结束日期',
+    queue: '队列',
+    queueAwsRegion: '队列区域',
     published: '公开',
     createSuccess: '比赛创建成功',
     updateSuccess: '比赛更新成功',
+    publishNote: '此开关打开，比赛将在对应的时间区段对外开放',
   },
   addPhase: {
     createPhase: '创建阶段',

@@ -107,6 +107,7 @@ export default {
     please: 'Please',
     login: 'log in',
     partiChall: 'to participate in this challenge.',
+    participated: 'Participated',
   },
   team: {
     team: 'Team',
@@ -209,6 +210,7 @@ export default {
     continue: 'Continue',
     accept_text: 'Please read and accept the rules and conditions.',
     accept_label: 'I accept the terms and conditions.',
+    note: 'Be sure to read it carefully and completely.',
   },
   submission: {
     guidelines: 'Submission Guidelines',
@@ -256,6 +258,7 @@ export default {
     cancelSuccess: 'Submission cancelled successfully!',
     rerun: 'Rerun',
     resume: 'Resume',
+    submissionId: 'Submission ID',
   },
   leaderboard: {
     team: 'Participant team',
@@ -291,9 +294,12 @@ export default {
     lbDesc: 'Leaderboard description',
     startDate: 'Start date',
     endDate: 'End date',
+    queue: 'Queue',
+    queueAwsRegion: 'Queue aws region',
     published: 'Published',
     createSuccess: 'Contest creation success',
     updateSuccess: 'Challenge updated successfully!',
+    publishNote: 'When this switch is turned on, the competition will be open to the public in the corresponding time period',
   },
   addPhase: {
     createPhase: 'Create Phase',
@@ -309,7 +315,7 @@ export default {
     maxSubmiPerDay: 'Max submissions perday',
     maxSubmiPerMonth: 'Max submissions per month',
     maxSubmissions: 'Max submissions',
-    isRestrictedToSelectOneSubmission: 'Is restricted to select onesubmission',
+    isRestrictedToSelectOneSubmission: 'Is restricted to select one submission',
     isPartialSubmissionEvaluationEnabled: 'Is partial submission evaluation enabled',
     allowedSubmissionFileTypes: 'Allowed submission file types',
     createSuccess: 'Phase creation successfully!',
