@@ -16,22 +16,36 @@
     <div class="content">
       <el-tabs v-model="activeName" class="demo-tabs">
         <el-tab-pane :label="$t('challenge.overview')" name="overview">
-          <overview :detailInfo="detailInfo" :phases="phases"></overview>
+          <div v-html="detailInfo.description" class="editor-content-view"></div>
         </el-tab-pane>
+        <el-tab-pane :label="$t('challenge.evaluation')" name="evaluation">
+          <el-collapse :model-value="['1', '2']" class="oa-collapse">
+            <el-collapse-item :title="$t('overview.eval.title')" name="1">
+              <div v-html="detailInfo.evaluation_details" class="editor-content-view"></div>
+            </el-collapse-item>
+            <el-collapse-item :title="$t('overview.term.title')" name="2">
+              <div v-html="detailInfo.terms_and_conditions" class="editor-content-view"></div>
+            </el-collapse-item>
+          </el-collapse>
+        </el-tab-pane>
+        <el-tab-pane :label="$t('overview.tracks')" name="track">
+          <tracks :tracks="tracks"></tracks>
+        </el-tab-pane>
+
         <el-tab-pane :label="$t('challenge.participate')" name="participate" v-if="!teamDetail">
-          <participate
-            :challengeId="challengeId"
-            :termsConditions="detailInfo.terms_and_conditions"
-            @callback="getPartTeam('submission')"></participate>
+          <participate :challengeId="challengeId" :termsConditions="detailInfo.terms_and_conditions" @callback="getPartTeam('submit')"></participate>
         </el-tab-pane>
-        <el-tab-pane :label="$t('challenge.submission')" name="submission" v-else>
-          <submission
+        <el-tab-pane :label="$t('challenge.submit')" name="submit" v-if="teamDetail">
+          <submit
             :challengeId="challengeId"
             :approved="teamDetail.approved"
             :allowCancel="detailInfo.allow_cancel_running_submissions"
             :guidelines="detailInfo.submission_guidelines"
-            :phases="phases"
-            @callback="deregister"></submission>
+            :tracks="tracks"
+            @callback="deregister"></submit>
+        </el-tab-pane>
+        <el-tab-pane :label="$t('submission.list')" name="mySubmission" v-if="teamDetail && teamDetail.approved">
+          <my-submission :challengeId="challengeId" :allowCancel="detailInfo.allow_cancel_running_submissions" :tracks="tracks"></my-submission>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.leaderboard')" name="leaderboard">
           <leader-board :challengeId="challengeId" :description="detailInfo.leaderboard_description"></leader-board>
@@ -40,7 +54,7 @@
           <approval :challengeId="challengeId"></approval>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.allSubmission')" name="allSubmission" v-if="isChallengeHost">
-          <all-submission :challengeId="challengeId" :phases="phases"></all-submission>
+          <all-submission :challengeId="challengeId" :tracks="tracks"></all-submission>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -49,14 +63,15 @@
 
 <script setup>
 import Participate from '@/views/challenge/Participate.vue';
-import Overview from '@/views/challenge/Overview.vue';
-import Submission from '@/views/challenge/Submission.vue';
+import Tracks from '@/views/challenge/Tracks.vue';
+import Submit from '@/views/challenge/Submit.vue';
+import MySubmission from '@/views/challenge/MySubmission.vue';
 import AllSubmission from '@/views/challenge/AllSubmission.vue';
 import LeaderBoard from '@/views/challenge/Leaderboard.vue';
 import Approval from '@/views/challenge/Approval.vue';
 import { onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { challengeTeam, deregisterChallenge, getChallengeUser, getChallengeDetail, challengePhase } from '@/api/challenge';
+import { challengeTeam, deregisterChallenge, getChallengeUser, getChallengeDetail, challengeTrack } from '@/api/challenge';
 import { getAuthToken } from '@/api/account.js';
 import { setJwtToken } from '@/utils/auth';
 import { useI18n } from 'vue-i18n';
@@ -74,7 +89,7 @@ const challengeId = route.params.challengeId;
 const activeName = ref('overview');
 const teamDetail = ref();
 const detailInfo = ref({});
-const phases = ref([]);
+const tracks = ref([]);
 const getPartTeam = (tabId) => {
   challengeTeam(challengeId).then((res) => {
     teamDetail.value = res;
@@ -90,7 +105,7 @@ const clearPartTeam = (tabId) => {
 };
 onBeforeMount((res) => {
   challengeDetail();
-  getPhases();
+  getTracks();
   if (store.state.token) {
     getAuthKey();
     getUserRole();
@@ -98,9 +113,9 @@ onBeforeMount((res) => {
   }
 });
 
-const getPhases = () => {
-  challengePhase(challengeId).then((res) => {
-    phases.value = res.results || [];
+const getTracks = () => {
+  challengeTrack(challengeId).then((res) => {
+    tracks.value = res.results || [];
   });
 };
 
@@ -176,6 +191,7 @@ const challengeDetail = () => {
   :deep(.el-tabs__item) {
     height: 52px;
     font-weight: 400;
+    font-size: 16px;
     &.is-active {
       color: var(--text-color);
     }

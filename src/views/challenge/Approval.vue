@@ -1,24 +1,37 @@
 <template>
   <el-table :data="teams" stripe style="width: 100%" header-cell-class-name="thBg">
+    <el-table-column type="expand">
+      <template #default="{ row }">
+        <div class="expandTable">
+          <h3>{{ $t('approval.member') }}</h3>
+          <el-table :data="row.members">
+            <el-table-column label="Name" prop="member_name" />
+            <el-table-column label="Email" prop="email" />
+            <el-table-column label="Affilliate To" prop="profile.affiliation" />
+            <el-table-column label="GITHUB" prop="profile.github_url" />
+          </el-table>
+        </div>
+      </template>
+    </el-table-column>
     <el-table-column type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" />
     <el-table-column prop="team_name" min-width="100" :label="$t('team.teamName')" />
     <el-table-column prop="created_by" :label="$t('team.createdBy')" />
     <el-table-column prop="id" :label="$t('approval.teamId')" />
-    <el-table-column :label="$t('approval.member')" show-overflow-tooltip>
+    <!-- <el-table-column :label="$t('approval.member')" show-overflow-tooltip>
       <template #default="{ row }">
         {{ row.members.map((item) => item.member_name).join(';') }}
       </template>
-    </el-table-column>
-    <el-table-column :label="$t('approval.state')">
+    </el-table-column> -->
+    <el-table-column :label="$t('approval.approval')" width="200">
       <template #default="{ row }">
-        <span :class="['approval-status', row.approved ? 'approve' : 'disagree']">
-          {{ row.approved ? $t('approval.approve') : $t('approval.disagree') }}
-        </span>
-      </template>
-    </el-table-column>
-    <el-table-column :label="$t('operate')" width="120">
-      <template #default="{ row }">
-        <el-switch v-model="row.approved" size="small" :before-change="() => false" @click="handleApproval(row)" />
+        <el-switch
+          v-model="row.approved"
+          size="small"
+          style="--el-switch-on-color: #13ce66"
+          :active-text="$t('approval.approve')"
+          :inactive-text="$t('approval.disagree')"
+          :before-change="() => false"
+          @click="handleApproval(row)" />
       </template>
     </el-table-column>
   </el-table>
@@ -99,6 +112,18 @@ const disapprove = (row) => {
     &::before {
       background-color: #e6595a;
     }
+  }
+}
+:deep(.el-switch__label) {
+  color: #a3a6ad;
+  &.is-active {
+    color: var(--el-color-primary);
+  }
+}
+.expandTable {
+  padding: 10px 30px 16px;
+  h3 {
+    margin-bottom: 16px;
   }
 }
 </style>

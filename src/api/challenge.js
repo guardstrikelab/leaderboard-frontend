@@ -21,31 +21,31 @@ export const challengeTeam = (challengeId) =>
     url: `/api/challenges/${challengeId}/participant_team/team_detail`,
   });
 
-// 查询phase
-export const challengePhase = (challengeId) =>
+// 查询track
+export const challengeTrack = (challengeId) =>
   service({
     method: 'get',
     url: `/api/challenges/challenge/${challengeId}/challenge_phase`,
   });
 
 // 查询提交列表
-export const getSubmission = (challengeId, phaseId, params) =>
+export const getSubmission = (challengeId, trackId, params) =>
   service({
     method: 'get',
-    url: `/api/jobs/challenge/${challengeId}/challenge_phase/${phaseId}/submission/`,
+    url: `/api/jobs/challenge/${challengeId}/challenge_phase/${trackId}/submission/`,
     params,
   });
 
 // 更新提交列表
-export const updateSubmission = (challengeId, phaseId, submisId, data) =>
+export const updateSubmission = (challengeId, trackId, submisId, data) =>
   service({
     method: 'PATCH',
-    url: `/api/jobs/challenge/${challengeId}/challenge_phase/${phaseId}/submission/${submisId}`,
+    url: `/api/jobs/challenge/${challengeId}/challenge_phase/${trackId}/submission/${submisId}`,
     data,
   });
 
 // 获取赛道
-export const getPhaseSplit = (challengeId) =>
+export const getTrackSplit = (challengeId) =>
   service({
     method: 'get',
     url: `/api/challenges/${challengeId}/challenge_phase_split`,
@@ -95,10 +95,10 @@ export const disapproveTeam = (challengeId, teamId) =>
   });
 
 // 查询某个阶段的所有提交
-export const getAllSubmissions = (challengeId, phaseId) =>
+export const getAllSubmissions = (challengeId, trackId) =>
   service({
     method: 'get',
-    url: `/api/challenges/${challengeId}/challenge_phase/${phaseId}/submissions`,
+    url: `/api/challenges/${challengeId}/challenge_phase/${trackId}/submissions`,
   });
 
 // 取消正在执行的任务

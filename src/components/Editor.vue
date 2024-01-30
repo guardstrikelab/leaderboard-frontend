@@ -25,7 +25,7 @@ const editorRef = shallowRef();
 const { locale } = useI18n();
 
 const toolbarConfig = {
-  excludeKeys: ['group-more-style', 'emotion', 'insertLink', 'insertImage', 'group-video', 'insertVideo', 'divider', 'fullScreen'],
+  excludeKeys: ['group-more-style', 'emotion', 'insertLink', 'insertImage', 'group-video', 'todo', 'insertVideo', 'fullScreen'],
 };
 const editorConfig = {
   placeholder: '',

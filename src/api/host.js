@@ -22,8 +22,8 @@ export const getAllChallenges = (challenge_time, challenge_approved, challenge_p
     params,
   });
 
-// 创建phase
-export const createPhase = (challenge_pk, data) =>
+// 创建track
+export const createTrack = (challenge_pk, data) =>
   service({
     method: 'post',
     url: `/api/challenges/challenge/challenge_host_team/${challenge_host_team_pk}/challenges/${challenge_pk}/create_or_update_challenge_phase/`,
@@ -40,8 +40,8 @@ export const verifyHostUser = () =>
     },
   });
 
-// 查询phase详情
-export const getPhaseDetail = (challenge_pk, id) =>
+// 查询track详情
+export const getTrackDetail = (challenge_pk, id) =>
   service({
     method: 'get',
     url: `/api/challenges/challenge/${challenge_pk}/challenge_phase/${id}`,
@@ -54,8 +54,8 @@ export const delChallenge = (challenge_pk) =>
     url: `/api/challenges/challenge_host_team/${challenge_host_team_pk}/challenge/${challenge_pk}`,
   });
 
-// 删除Phase
-export const delPhase = (challenge_pk, id) =>
+// 删除track
+export const delTrack = (challenge_pk, id) =>
   service({
     method: 'delete',
     url: `/api/challenges/challenge/${challenge_pk}/challenge_phase/${id}`,

@@ -13,32 +13,50 @@
       </div>
     </div>
     <div class="content">
-      <overview :detailInfo="detailInfo" :phases="phases"></overview>
+      <el-tabs v-model="activeName">
+        <el-tab-pane :label="$t('challenge.overview')" name="overview">
+          <div v-html="detailInfo.description" class="editor-content-view"></div>
+        </el-tab-pane>
+        <el-tab-pane :label="$t('challenge.evaluation')" name="evaluation">
+          <el-collapse :model-value="['1', '2']" class="oa-collapse">
+            <el-collapse-item :title="$t('overview.eval.title')" name="1">
+              <div v-html="detailInfo.evaluation_details" class="editor-content-view"></div>
+            </el-collapse-item>
+            <el-collapse-item :title="$t('overview.term.title')" name="2">
+              <div v-html="detailInfo.terms_and_conditions" class="editor-content-view"></div>
+            </el-collapse-item>
+          </el-collapse>
+        </el-tab-pane>
+        <el-tab-pane :label="$t('overview.tracks')" name="track">
+          <tracks :tracks="tracks"></tracks>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
 
 <script setup>
-import Overview from '@/views/challenge/Overview.vue';
+import Tracks from '@/views/challenge/Tracks.vue';
 import { onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { getChallengeDetail, challengePhase } from '@/api/challenge';
+import { getChallengeDetail, challengeTrack } from '@/api/challenge';
 import { formatTime } from '@/utils/tool';
 import racePng from '../../assets/images/banner.png';
 
 const route = useRoute();
 const challengeId = route.params.challengeId;
 const detailInfo = ref({});
-const phases = ref([]);
+const tracks = ref([]);
+const activeName = ref('overview');
 
 onBeforeMount((res) => {
   challengeDetail();
-  getPhases();
+  getTracks();
 });
 
-const getPhases = () => {
-  challengePhase(challengeId).then((res) => {
-    phases.value = res.results || [];
+const getTracks = () => {
+  challengeTrack(challengeId).then((res) => {
+    tracks.value = res.results || [];
   });
 };
 
@@ -79,6 +97,20 @@ const challengeDetail = () => {
   border-radius: 4px 4px 4px 4px;
   border: 1px solid #424e61;
   margin: 0 auto 16px;
-  padding: 24px 24px 20px;
+  padding: 5px 24px 20px;
+  :deep(.el-tabs__header) {
+    margin-bottom: 24px;
+  }
+  :deep(.el-tabs__item) {
+    height: 52px;
+    font-weight: 400;
+    font-size: 16px;
+    &.is-active {
+      color: var(--text-color);
+    }
+  }
+  :deep(.el-tabs__active-bar) {
+    height: 3px;
+  }
 }
 </style>

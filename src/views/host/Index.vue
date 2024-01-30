@@ -49,8 +49,8 @@
       <el-table-column type="expand">
         <template #default="props">
           <div class="expand-panel">
-            <div class="title mb16">Challenge_phases：</div>
-            <el-table :data="props.row.phaseList" :show-header="false">
+            <div class="title mb16">Challenge Tracks：</div>
+            <el-table :data="props.row.trackList" :show-header="false">
               <el-table-column label="Name" prop="name" width="250" />
               <el-table-column label="Description" prop="description">
                 <template #default="{ row }">
@@ -61,14 +61,14 @@
                 <template #default="{ row }">
                   <div class="flex">
                     <el-tooltip class="box-item" effect="light" :content="$t('edit')" placement="top-start">
-                      <span class="icon-button" @click="eidtPhase(props.row, row)">
+                      <span class="icon-button" @click="eidtTrack(props.row, row)">
                         <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-bianji"></use>
                         </svg>
                       </span>
                     </el-tooltip>
                     <el-tooltip class="box-item" effect="light" :content="$t('delete')" placement="top-start">
-                      <span class="icon-button" @click="deletePhase(props.row, row)">
+                      <span class="icon-button" @click="deleteTrack(props.row, row)">
                         <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-Delete"></use>
                         </svg>
@@ -161,8 +161,8 @@
                 </svg>
               </span>
             </el-tooltip>
-            <el-tooltip class="box-item" effect="light" :content="$t('host.createPhases')" placement="top-start">
-              <span class="icon-button" @click="creatPhase(row)">
+            <el-tooltip class="box-item" effect="light" :content="$t('host.createTracks')" placement="top-start">
+              <span class="icon-button" @click="creatTrack(row)">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-a-HostedChallenge"></use>
                 </svg>
@@ -195,8 +195,8 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getAllChallenges, delChallenge, delPhase } from '@/api/host';
-import { challengePhase } from '@/api/challenge';
+import { getAllChallenges, delChallenge, delTrack } from '@/api/host';
+import { challengeTrack } from '@/api/challenge';
 import { formatTime } from '@/utils/tool';
 import { useI18n } from 'vue-i18n';
 
@@ -242,8 +242,8 @@ const getList = () => {
     .then((res) => {
       let resData = res.results || [];
       resData.forEach((item) => {
-        item.phaseList = [];
-        item.loadPhases = false;
+        item.trackList = [];
+        item.loadTracks = false;
       });
       challengeList.value = resData;
       pager.total = res.count;
@@ -257,8 +257,8 @@ const eidtChallenge = (row) => {
   router.push(`/host/challenge/edit/${row.id}`);
 };
 
-const creatPhase = (row) => {
-  router.push(`/host/phase/add/${row.id}`);
+const creatTrack = (row) => {
+  router.push(`/host/track/add/${row.id}`);
 };
 
 const deleteChallenge = (row) => {
@@ -269,23 +269,23 @@ const deleteChallenge = (row) => {
 };
 const batchDelete = () => {};
 
-const eidtPhase = (challengeRow, phaseRow) => {
-  router.push(`/host/phase/edit/${challengeRow.id}/${phaseRow.id}`);
+const eidtTrack = (challengeRow, trackRow) => {
+  router.push(`/host/track/edit/${challengeRow.id}/${trackRow.id}`);
 };
-const deletePhase = (challengeRow, phaseRow) => {
-  delPhase(challengeRow.id, phaseRow.id).then((res) => {
-    ElMessage.success(t('host.phaseDeleteSuccess'));
-    challengePhase(challengeRow.id).then((res) => {
-      challengeRow.phaseList = res.results || [];
-      challengeRow.loadPhases = true;
+const deleteTrack = (challengeRow, trackRow) => {
+  delTrack(challengeRow.id, trackRow.id).then((res) => {
+    ElMessage.success(t('host.trackDeleteSuccess'));
+    challengeTrack(challengeRow.id).then((res) => {
+      challengeRow.trackList = res.results || [];
+      challengeRow.loadTracks = true;
     });
   });
 };
 const expandChange = (row, expandedRows) => {
-  if (!row.loadPhases) {
-    challengePhase(row.id).then((res) => {
-      row.phaseList = res.results || [];
-      row.loadPhases = true;
+  if (!row.loadTracks) {
+    challengeTrack(row.id).then((res) => {
+      row.trackList = res.results || [];
+      row.loadTracks = true;
     });
   }
 };

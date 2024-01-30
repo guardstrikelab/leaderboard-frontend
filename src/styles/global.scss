@@ -107,6 +107,7 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
+  flex-shrink: 0;
 }
 
 :focus-visible {
@@ -397,10 +398,9 @@ body {
 .el-collapse.oa-collapse {
   border: none;
   margin-top: -16px;
-  // margin-bottom: 24px;
   --el-collapse-border-color: rgba(67, 77, 96, 0.6);
   .el-collapse-item__header {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
   }
   .el-collapse-item__wrap {

@@ -1,6 +1,6 @@
 <template>
-  <el-select v-model="selectedPhaseId" class="mb16" :placeholder="$t('submission.phasePH')" @change="handleChangePhase" style="width: 360px">
-    <el-option v-for="item in phases" :key="item.id" :label="item.name" :value="item.id" />
+  <el-select v-model="selectedTrackId" class="mb16" :placeholder="$t('submission.trackPH')" @change="handleChangeTrack" style="width: 360px">
+    <el-option v-for="item in tracks" :key="item.id" :label="item.name" :value="item.id" />
   </el-select>
   <el-table :data="submissionList" stripe style="width: 100%">
     <el-table-column fixed type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" />
@@ -58,32 +58,32 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const props = defineProps({
   challengeId: [String, Number],
-  phases: {
+  tracks: {
     type: Array,
     default: [],
   },
 });
 
 onMounted(() => {
-  if (props.phases.length > 0) {
-    selectedPhaseId.value = props.phases[0].id;
+  if (props.tracks.length > 0) {
+    selectedTrackId.value = props.tracks[0].id;
     getSubmissionList();
   }
 });
 
-const selectedPhaseId = ref('');
+const selectedTrackId = ref('');
 const pager = reactive({
   total: 0,
   pageNum: 1,
   pageSize: 10,
 });
 const submissionList = ref([]);
-const handleChangePhase = () => {
+const handleChangeTrack = () => {
   pager.pageNum = 1;
   getSubmissionList();
 };
 const getSubmissionList = () => {
-  getAllSubmissions(props.challengeId, selectedPhaseId.value, { page: pager.pageNum }).then((res) => {
+  getAllSubmissions(props.challengeId, selectedTrackId.value, { page: pager.pageNum }).then((res) => {
     pager.total = res.count;
     let result = res.results || [];
     submissionList.value = pager.pageNum === 1 ? result : submissionList.value.concat(result);

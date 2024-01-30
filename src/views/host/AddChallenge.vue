@@ -75,6 +75,13 @@
           </div>
         </el-form-item>
 
+        <el-form-item prop="manual_participant_approval">
+          <div class="flex-center">
+            <span class="inline-title">{{ $t('addChall.participantApproval') }}</span>
+            <el-switch v-model="ruleForm.manual_participant_approval" size="small" />
+          </div>
+        </el-form-item>
+
         <el-form-item prop="published">
           <div class="flex-center">
             <span class="inline-title">{{ $t('addChall.published') }}</span>
@@ -126,6 +133,7 @@ const ruleForm = reactive({
   end_date: '',
   queue: '',
   queue_aws_region: '',
+  manual_participant_approval: false,
   published: false,
 });
 
@@ -182,6 +190,7 @@ const submitForm = async (formEl) => {
       formData.append('end_date', ruleForm.end_date);
       formData.append('queue', ruleForm.queue);
       formData.append('queue_aws_region', ruleForm.queue_aws_region);
+      formData.append('manual_participant_approval', ruleForm.manual_participant_approval);
       formData.append('published', ruleForm.published);
       formData.append('image', ruleForm.image);
       if (ruleForm.id) {
@@ -218,6 +227,7 @@ onMounted(() => {
       ruleForm.end_date = res.end_date;
       ruleForm.queue = res.queue;
       ruleForm.queue_aws_region = res.queue_aws_region;
+      ruleForm.manual_participant_approval = res.manual_participant_approval;
       ruleForm.published = res.published;
       ruleForm.id = res.id;
       ruleForm.image = res.image;

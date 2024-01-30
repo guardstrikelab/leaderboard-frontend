@@ -6,10 +6,10 @@
       </el-header>
       <el-container>
         <!-- 侧边栏 -->
-        <el-aside width="232px" class="small-scrollbar" v-if="store.state.token">
-          <el-menu :default-active="activeSecondMenu" :collapse="false" router>
+        <el-aside :width="isCollapse ? '71px' : '232px'" class="small-scrollbar" v-if="store.state.token">
+          <el-menu :default-active="activeSecondMenu" :collapse="isCollapse" router>
             <el-menu-item index="/challenge">
-              <span class="icon-btn mr16">
+              <span class="icon-btn">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-Challenge"></use>
                 </svg>
@@ -17,7 +17,7 @@
               <template #title>{{ $t('challenge.challenge') }} </template>
             </el-menu-item>
             <el-menu-item index="/team">
-              <span class="icon-btn mr16">
+              <span class="icon-btn">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-Team"></use>
                 </svg>
@@ -25,7 +25,7 @@
               <template #title>{{ $t('team.team') }}</template>
             </el-menu-item>
             <el-menu-item index="/host" v-if="store.state.isHost === 1">
-              <span class="icon-btn mr16">
+              <span class="icon-btn">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-a-HostedChallenge"></use>
                 </svg>
@@ -33,6 +33,12 @@
               <template #title>{{ $t('host.hostchall') }}</template>
             </el-menu-item>
           </el-menu>
+
+          <span class="icon-button toggle-btn" @click="toggleCollapse">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-shouqi1"></use>
+            </svg>
+          </span>
         </el-aside>
 
         <!-- 主体内容 -->
@@ -62,6 +68,7 @@ import { verifyHostUser } from '@/api/host';
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
+const isCollapse = ref(false);
 const activeSecondMenu = computed(() => {
   const { meta, path } = route;
   if (meta && meta.activeMenu) {
@@ -69,6 +76,10 @@ const activeSecondMenu = computed(() => {
   }
   return path;
 });
+
+const toggleCollapse = () => {
+  isCollapse.value = !isCollapse.value;
+};
 
 // 获取所有需要缓存的组件
 const getCachedComponentNames = () => {
@@ -104,22 +115,25 @@ onMounted(() => {
   overflow-x: hidden;
   border-right: 1px solid #434d60;
   .el-menu {
-    --el-menu-icon-width: 14px;
+    --el-menu-icon-width: 24px;
     border: none;
     background-color: transparent;
-    :deep(.el-sub-menu__title) {
-      height: 36px;
-      margin-bottom: 4px;
-      color: #ffffff;
-    }
-    :deep(.el-menu) {
-      background-color: transparent;
+    &.el-menu--collapse {
+      --el-menu-base-level-padding: 15px;
+      .el-menu-item {
+        .icon-btn {
+          margin-right: 0px;
+        }
+      }
     }
     .el-menu-item {
       height: 40px;
       margin-bottom: 8px;
       color: #ffffff;
       border-radius: 4px;
+      .icon-btn {
+        margin-right: 16px;
+      }
       &.is-active {
         background-color: #353e4e;
         .icon-btn {
@@ -127,6 +141,11 @@ onMounted(() => {
         }
       }
     }
+  }
+  .toggle-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 19px;
   }
 }
 

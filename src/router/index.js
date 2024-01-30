@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Layout from '../layout/Index.vue';
 import i18n from '@/lang/index.js';
-import store from '../store';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -93,21 +92,21 @@ const router = createRouter({
               },
             },
             {
-              path: 'phase/add/:challengeId',
-              component: () => import('../views/host/AddPhase.vue'),
-              name: 'AddPhase',
+              path: 'track/add/:challengeId',
+              component: () => import('../views/host/AddTrack.vue'),
+              name: 'AddTrack',
               meta: {
-                title: i18n.global.t('addPhase.createPhase'),
+                title: i18n.global.t('addTrack.createTrack'),
                 showcrumb: true,
                 activeMenu: '/host',
               },
             },
             {
-              path: 'phase/edit/:challengeId/:phaseId',
-              component: () => import('../views/host/AddPhase.vue'),
-              name: 'EditPhase',
+              path: 'track/edit/:challengeId/:trackId',
+              component: () => import('../views/host/AddTrack.vue'),
+              name: 'EditTrack',
               meta: {
-                title: i18n.global.t('addPhase.editPhase'),
+                title: i18n.global.t('addTrack.editTrack'),
                 showcrumb: true,
                 activeMenu: '/host',
               },

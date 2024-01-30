@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "35671155",
+      "name": "shouqi",
+      "font_class": "shouqi1",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
       "icon_id": "38977502",
       "name": "zhushi",
       "font_class": "zhushi",
