@@ -48,13 +48,13 @@
         <el-input v-model.trim="form.last_name" placeholder="-" maxlength="150"></el-input>
       </div>
       <div class="flex-between item">
-        <div class="label">{{ $t('user.affilliate') }}</div>
+        <div class="label">{{ $t('user.affiliatedTo') }}</div>
         <el-input v-model.trim="form.affiliation" placeholder="-" maxlength="512"></el-input>
       </div>
-      <div class="flex-between item">
+      <!-- <div class="flex-between item">
         <div class="label">GITHUB</div>
         <el-input v-model.trim="form.github_url" placeholder="-" maxlength="200"></el-input>
-      </div>
+      </div> -->
     </div>
     <div class="footer">
       <el-button type="primary" @click="save"> {{ $t('save') }} </el-button>

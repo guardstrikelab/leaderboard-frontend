@@ -16,15 +16,6 @@
         <el-form-item :label="$t('addChall.shortDesc')" prop="short_description">
           <editor v-model="ruleForm.short_description"></editor>
         </el-form-item>
-        <el-form-item :label="$t('addChall.desc')" prop="description">
-          <editor v-model="ruleForm.description"></editor>
-        </el-form-item>
-        <el-form-item :label="$t('addChall.evaluation')" prop="evaluation_details">
-          <editor v-model="ruleForm.evaluation_details"></editor>
-        </el-form-item>
-        <el-form-item :label="$t('addChall.termsConditions')" prop="terms_and_conditions">
-          <editor v-model="ruleForm.terms_and_conditions"></editor>
-        </el-form-item>
         <el-form-item :label="$t('addChall.image')" prop="image">
           <el-upload class="avatar-uploader" name="image" :show-file-list="false" :on-change="onFileChange" :auto-upload="false">
             <img v-if="ruleForm.image" :src="ruleForm.imageUrl || ruleForm.image" class="avatar" />
@@ -35,6 +26,15 @@
               <span class="mt24">{{ $t('addChall.imagePH') }}</span>
             </span>
           </el-upload>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.desc')" prop="description">
+          <editor v-model="ruleForm.description"></editor>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.evaluation')" prop="evaluation_details">
+          <editor v-model="ruleForm.evaluation_details"></editor>
+        </el-form-item>
+        <el-form-item :label="$t('addChall.termsConditions')" prop="terms_and_conditions">
+          <editor v-model="ruleForm.terms_and_conditions"></editor>
         </el-form-item>
 
         <el-form-item :label="$t('addChall.SubmiGuide')" prop="submission_guidelines">

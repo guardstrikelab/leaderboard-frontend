@@ -17,18 +17,6 @@
         <el-form-item :label="$t('addChall.desc')" prop="description">
           <editor v-model="ruleForm.description"></editor>
         </el-form-item>
-        <el-form-item prop="leaderboard_public">
-          <span class="inline-title">{{ $t('addTrack.lbPublic') }}</span>
-          <el-switch v-model="ruleForm.leaderboard_public" size="small" />
-        </el-form-item>
-        <el-form-item prop="is_public">
-          <span class="inline-title">{{ $t('addTrack.isPublic') }}</span>
-          <el-switch v-model="ruleForm.is_public" size="small" />
-        </el-form-item>
-        <el-form-item prop="is_submission_public">
-          <span class="inline-title">{{ $t('addTrack.isSubmiPublic') }}</span>
-          <el-switch v-model="ruleForm.is_submission_public" size="small" />
-        </el-form-item>
         <el-form-item>
           <div class="flex-between" style="width: 100%">
             <el-form-item :label="$t('addTrack.startDate')" prop="start_date" required>
@@ -60,6 +48,36 @@
         </el-form-item>
         <el-form-item :label="$t('addTrack.maxSubmissions')" prop="max_submissions" required>
           <el-input v-model="ruleForm.max_submissions" maxlength="32" />
+        </el-form-item>
+        <el-form-item prop="leaderboard_public">
+          <span class="inline-title">{{ $t('addTrack.lbPublic') }}</span>
+          <el-switch v-model="ruleForm.leaderboard_public" size="small" />
+          <span class="note ml16">
+            <svg class="icon" aria-hidden="true" style="font-size: 12px">
+              <use xlink:href="#icon-zhushi"></use>
+            </svg>
+            {{ $t('addTrack.isLeaderboardPublicNote') }}
+          </span>
+        </el-form-item>
+        <el-form-item prop="is_public">
+          <span class="inline-title">{{ $t('addTrack.isPublic') }}</span>
+          <el-switch v-model="ruleForm.is_public" size="small" />
+          <span class="note ml16">
+            <svg class="icon" aria-hidden="true" style="font-size: 12px">
+              <use xlink:href="#icon-zhushi"></use>
+            </svg>
+            {{ $t('addTrack.isTrackPublicNote') }}
+          </span>
+        </el-form-item>
+        <el-form-item prop="is_submission_public">
+          <span class="inline-title">{{ $t('addTrack.isSubmiPublic') }}</span>
+          <el-switch v-model="ruleForm.is_submission_public" size="small" />
+          <span class="note ml16">
+            <svg class="icon" aria-hidden="true" style="font-size: 12px">
+              <use xlink:href="#icon-zhushi"></use>
+            </svg>
+            {{ $t('addTrack.isSubmissionDefaultPublicNote') }}
+          </span>
         </el-form-item>
         <el-form-item prop="is_restricted_to_select_one_submission">
           <span class="inline-title">{{ $t('addTrack.isRestrictedToSelectOneSubmission') }}</span>
@@ -109,7 +127,7 @@ const ruleForm = reactive({
   max_submissions_per_month: '',
   max_submissions: '',
   is_restricted_to_select_one_submission: false,
-  is_partial_submission_evaluation_enabled: false,
+  is_partial_submission_evaluation_enabled: true,
   allowed_submission_file_types: '',
 });
 
@@ -224,6 +242,10 @@ onMounted(() => {
       margin-right: 20px;
       min-width: 260px;
       display: inline-block;
+    }
+    .note {
+      color: #7f889a;
+      font-size: 12px;
     }
   }
 }

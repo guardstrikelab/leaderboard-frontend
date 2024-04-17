@@ -7,8 +7,8 @@
           <el-table :data="row.members">
             <el-table-column label="Name" prop="member_name" />
             <el-table-column label="Email" prop="email" />
-            <el-table-column label="Affilliate To" prop="profile.affiliation" />
-            <el-table-column label="GITHUB" prop="profile.github_url" />
+            <el-table-column label="Affiliated To" prop="profile.affiliation" />
+            <!-- <el-table-column label="GITHUB" prop="profile.github_url" /> -->
           </el-table>
         </div>
       </template>

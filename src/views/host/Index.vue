@@ -52,11 +52,16 @@
             <div class="title mb16">Challenge Tracks：</div>
             <el-table :data="props.row.trackList" :show-header="false">
               <el-table-column label="Name" prop="name" width="250" />
-              <el-table-column label="Description" prop="description">
+              <el-table-column label="Time">
+                <template #default="{ row }">
+                  <div>{{ formatTime(row.start_date) }} - {{ formatTime(row.end_date) }}  </div>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column label="Description" prop="description">
                 <template #default="{ row }">
                   <div v-html="row.description"></div>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column :label="$t('operate')" width="100">
                 <template #default="{ row }">
                   <div class="flex">
@@ -123,7 +128,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="is_registration_open" :label="$t('host.isRegistrationOpen')" width="150">
+      <!-- <el-table-column prop="is_registration_open" :label="$t('host.isRegistrationOpen')" width="150">
         <template #default="{ row }">
           <span class="round-status success" v-if="row.is_registration_open">
             <svg class="icon" aria-hidden="true">
@@ -150,7 +155,7 @@
             </svg>
           </span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column :label="$t('operate')" width="150">
         <template #default="{ row }">
           <div class="flex">
