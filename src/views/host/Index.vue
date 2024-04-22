@@ -202,7 +202,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getAllChallenges, delChallenge, delTrack } from '@/api/host';
 import { challengeTrack } from '@/api/challenge';
-import { formatTime } from '@/utils/tool';
+import { formatTime, oaMessageBox } from '@/utils/tool';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -267,10 +267,16 @@ const creatTrack = (row) => {
 };
 
 const deleteChallenge = (row) => {
-  delChallenge(row.id).then((res) => {
-    ElMessage.success(t('host.deleteSuccess'));
-    getList();
-  });
+  oaMessageBox({
+    title: t('host.deleteChallengeTitle'),
+    message: t('host.deleteChallengeNote'),
+  }).then(() => {
+      delChallenge(row.id).then((res) => {
+        ElMessage.success(t('host.deleteSuccess'));
+        getList();
+      });
+    }).catch(() => {});
+
 };
 const batchDelete = () => {};
 
@@ -278,13 +284,19 @@ const eidtTrack = (challengeRow, trackRow) => {
   router.push(`/host/track/edit/${challengeRow.id}/${trackRow.id}`);
 };
 const deleteTrack = (challengeRow, trackRow) => {
-  delTrack(challengeRow.id, trackRow.id).then((res) => {
-    ElMessage.success(t('host.trackDeleteSuccess'));
-    challengeTrack(challengeRow.id).then((res) => {
-      challengeRow.trackList = res.results || [];
-      challengeRow.loadTracks = true;
-    });
-  });
+  oaMessageBox({
+    title: t('host.deleteTrackTitle'),
+    message: t('host.deleteTrackNote'),
+  }).then(() => {
+      delTrack(challengeRow.id, trackRow.id).then((res) => {
+        ElMessage.success(t('host.trackDeleteSuccess'));
+        challengeTrack(challengeRow.id).then((res) => {
+          challengeRow.trackList = res.results || [];
+          challengeRow.loadTracks = true;
+        });
+      });
+    }).catch(() => {});
+  
 };
 const expandChange = (row, expandedRows) => {
   if (!row.loadTracks) {

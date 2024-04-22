@@ -338,5 +338,9 @@ export default {
     createTracks: '创建阶段',
     deleteSuccess: '比赛删除成功',
     trackDeleteSuccess: '阶段删除成功',
+    deleteChallengeTitle: '删除比赛',
+    deleteChallengeNote: '确定删除此比赛吗？',
+    deleteTrackTitle: '删除赛道',
+    deleteTrackNote: '确定删除此赛道吗？',
   },
 };
