@@ -49,6 +49,20 @@
         <el-form-item :label="$t('addTrack.maxSubmissions')" prop="max_submissions" required>
           <el-input v-model="ruleForm.max_submissions" maxlength="32" />
         </el-form-item>
+        <el-form-item prop="metrics" label="Metrics">
+          <div class="flex-center">
+            <Vue3JsonEditor
+              id="json-editor"
+              style="width: 800px"
+              mode="code"
+              v-model="ruleForm.metrics"
+              :show-btns="false"
+              :expandedOnStart="true"
+              @json-change="onJsonChange"
+              @has-error="onError"
+            />
+          </div>
+        </el-form-item>
         <el-form-item prop="leaderboard_public">
           <span class="inline-title">{{ $t('addTrack.lbPublic') }}</span>
           <el-switch v-model="ruleForm.leaderboard_public" size="small" />
@@ -107,11 +121,12 @@ import { getChallengeDetail } from '@/api/challenge';
 import { useRouter } from 'vue-router';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { Vue3JsonEditor } from 'vue3-json-editor'
 
 const route = useRoute();
 const { t } = useI18n();
 const router = useRouter();
-
+const metrics_json_has_error = ref(false)
 const ruleForm = reactive({
   id: undefined,
   name: '',
@@ -129,6 +144,36 @@ const ruleForm = reactive({
   is_restricted_to_select_one_submission: false,
   is_partial_submission_evaluation_enabled: true,
   allowed_submission_file_types: '',
+  metrics: {
+    "labels":
+    [
+        "Metric name 1",
+        "Metric name 2",
+        "Metric name 3",
+        "Metric name 4",
+        "Metric name 5"
+    ],
+    "metadata":
+    {
+        "Metric name 1":
+        {
+            "description": "description1"
+        },
+        "Metric name 2":
+        {
+            "description": "description1"
+        },
+        "Metric name 3":
+        {
+            "description": "description1"
+        },
+        "Metric name 4":
+        {
+            "description": "description1"
+        }
+    },
+    "default_order_by": "Driving score"
+  }
 });
 
 const ruleFormRef = ref();
@@ -140,7 +185,25 @@ const validatehtml = (rule, value, callback) => {
     callback();
   }
 };
-
+const onJsonChange = (value) => {
+  metrics_json_has_error.value = false
+  ruleForm.metrics = value 
+}
+const onError = (value) => {
+  metrics_json_has_error.value = true
+  console.log(value)
+}
+const validate_metrics = (rule, value, callback) => {
+  if (metrics_json_has_error.value){
+    callback(new Error('invalid json metrics! Please check web console for details.'));
+  } else if(!value.hasOwnProperty("labels") ){
+    callback(new Error(rule.field + ' has no `labels` found'));
+  } else if(!value.hasOwnProperty("default_order_by") ){
+    callback(new Error(rule.field + ' has no `default_order_by` found'));
+  } else {
+    callback();
+  }
+};
 const rules = reactive({
   name: [
     { required: true, message: 'title is required', trigger: 'blur' },
@@ -151,6 +214,7 @@ const rules = reactive({
   terms_and_conditions: [{ validator: validatehtml, trigger: 'blur' }],
   submission_guidelines: [{ validator: validatehtml, trigger: 'blur' }],
   leaderboard_description: [{ validator: validatehtml, trigger: 'blur' }],
+  metrics: [{ validator: validate_metrics, trigger: 'blur' }],
   max_submissions_per_day: [{ pattern: /^-?\d+(\.\d+)?$/, message: 'Enter numbers only', trigger: 'blur' }],
   max_submissions_per_month: [{ pattern: /^-?\d+(\.\d+)?$/, message: 'Enter numbers only', trigger: 'blur' }],
   max_submissions: [{ pattern: /^-?\d+(\.\d+)?$/, message: 'Enter numbers only', trigger: 'blur' }],
@@ -176,6 +240,7 @@ const submitForm = async (formEl) => {
         max_submissions: ruleForm.max_submissions,
         is_restricted_to_select_one_submission: ruleForm.is_restricted_to_select_one_submission,
         is_partial_submission_evaluation_enabled: ruleForm.is_partial_submission_evaluation_enabled,
+        metrics: ruleForm.metrics,
         // allowed_submission_file_types: ruleForm.allowed_submission_file_types,
       }).then((res) => {
         ElMessage.success(ruleForm.id !== undefined ? t('addTrack.updateSuccess') : t('addTrack.createSuccess'));
@@ -212,6 +277,7 @@ onMounted(() => {
       ruleForm.is_restricted_to_select_one_submission = res.is_restricted_to_select_one_submission;
       ruleForm.is_partial_submission_evaluation_enabled = res.is_partial_submission_evaluation_enabled;
       ruleForm.allowed_submission_file_types = res.allowed_submission_file_types;
+      ruleForm.metrics = res.metrics
       ruleForm.id = res.id;
     });
   }
@@ -246,6 +312,30 @@ onMounted(() => {
     .note {
       color: #7f889a;
       font-size: 12px;
+    }
+    ::v-deep {
+      .jsoneditor-poweredBy {
+          display: none !important;
+      }
+      div.jsoneditor-outer {
+          height: 300px;
+      }
+      div.jsoneditor-menu {
+          background-color: #12171f00;
+          border: 1px solid #424e61;
+      }
+      div.jsoneditor-modes {
+        visibility: hidden;
+      }
+      div.jsoneditor {
+          border: 1px solid #000;
+      }
+    }
+    #json-editor > div.jsoneditor {
+      border: 1px solid #424e61;
+      .jsoneditor-menu {
+        background-color: #12171f00;
+      }
     }
   }
 }

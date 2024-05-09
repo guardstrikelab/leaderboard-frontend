@@ -459,6 +459,11 @@
   "resolved" "https://registry.npmmirror.com/compute-scroll-into-view/-/compute-scroll-into-view-1.0.20.tgz"
   "version" "1.0.20"
 
+"core-js@^3.21.1":
+  "integrity" "sha512-fu5vHevQ8ZG4og+LXug8ulUtVxjOcEYvifJr7L5Bfq9GOztVqsKd9/59hUk2ZSbCrS3BqUr3EpaYGIYzq7g3Ug=="
+  "resolved" "https://registry.npmmirror.com/core-js/-/core-js-3.37.0.tgz"
+  "version" "3.37.0"
+
 "csstype@^3.1.1":
   "integrity" "sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ=="
   "resolved" "https://registry.npmmirror.com/csstype/-/csstype-3.1.2.tgz"
@@ -1139,7 +1144,7 @@
   dependencies:
     "@vue/devtools-api" "^6.5.0"
 
-"vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.2", "vue@^3.0.5", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.3.4", "vue@2 || 3", "vue@3.3.4":
+"vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.2", "vue@^3.0.5", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.2.31", "vue@^3.3.4", "vue@2 || 3", "vue@3.3.4":
   "integrity" "sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw=="
   "resolved" "https://registry.npmmirror.com/vue/-/vue-3.3.4.tgz"
   "version" "3.3.4"
@@ -1149,6 +1154,14 @@
     "@vue/runtime-dom" "3.3.4"
     "@vue/server-renderer" "3.3.4"
     "@vue/shared" "3.3.4"
+
+"vue3-json-editor@^1.1.5":
+  "integrity" "sha512-p+hbl5SdMifA9brPt9TsG2HYB7Xy7xy98b61zcIusVpwhGtS5a0IwWPKM7BXcj9poIdc/bPs4AFchQOHIBq++w=="
+  "resolved" "https://registry.npmmirror.com/vue3-json-editor/-/vue3-json-editor-1.1.5.tgz"
+  "version" "1.1.5"
+  dependencies:
+    "core-js" "^3.21.1"
+    "vue" "^3.2.31"
 
 "vuex@^4.0.2":
   "integrity" "sha512-M6r8uxELjZIK8kTKDGgZTYX/ahzblnzC4isU1tpmEuOIIKmV+TRdc+H4s8ds2NuZ7wpUTdGRzJRtoj+lI+pc0Q=="
