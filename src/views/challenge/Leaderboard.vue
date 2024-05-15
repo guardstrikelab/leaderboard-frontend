@@ -6,7 +6,7 @@
   </el-collapse>
 
   <div class="flex-center mb16">
-    <el-select v-model="curSplitId" :placeholder="$t('submission.trackPH')" @change="splitChange" style="width: 360px" class="mr16">
+    <el-select v-model="curSplitId" :placeholder="$t('submission.trackPH')" @change="handleChange" style="width: 360px" class="mr16">
       <el-option v-for="item in splits" :key="item.id" :label="getSplitLabel(item)" :value="item.id" />
     </el-select>
 
@@ -82,6 +82,15 @@ const pager = reactive({
   pageSize: 1000,
 });
 const leaderboardList = ref([]);
+const handleChange = (splitId) => {
+    // console.log(item)
+    const split = splits.value.find(item => item.id === splitId);
+    if(split !== undefined) {
+      labels.value = split.leaderboard_schema?.labels || [];
+      curOrderBy.value = labels.value[0];
+    }
+    splitChange()
+}
 const splitChange = () => {
   getLeaderboard(curSplitId.value, { page_size: 1000, order_by: curOrderBy.value || undefined }).then((res) => {
     pager.total = res.count;
