@@ -4,7 +4,7 @@
   </el-select>
   <el-table :data="submissionList" stripe style="width: 100%">
     <!-- <el-table-column fixed type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" /> -->
-    <el-table-column fixed prop="participant_team" :label="$t('submission.team')" width="20 0"> </el-table-column>
+    <el-table-column fixed prop="participant_team" :label="$t('submission.team')" width="200"> </el-table-column>
     <el-table-column prop="created_by" :label="$t('submission.createdBy')" width="100"> </el-table-column>
     <el-table-column prop="status" :label="$t('submission.status')" width="100">
       <template #default="{ row }">
