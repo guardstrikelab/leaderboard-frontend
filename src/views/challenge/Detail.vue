@@ -19,13 +19,13 @@
           <div v-html="detailInfo.description" class="editor-content-view"></div>
         </el-tab-pane>
         <el-tab-pane :label="$t('challenge.evaluation')" name="evaluation">
-          <el-collapse :model-value="['1', '2']" class="oa-collapse">
+          <el-collapse :model-value="['1']" class="oa-collapse">
             <el-collapse-item :title="$t('overview.eval.title')" name="1">
               <div v-html="detailInfo.evaluation_details" class="editor-content-view"></div>
             </el-collapse-item>
-            <el-collapse-item :title="$t('overview.term.title')" name="2">
+            <!-- <el-collapse-item :title="$t('overview.term.title')" name="2">
               <div v-html="detailInfo.terms_and_conditions" class="editor-content-view"></div>
-            </el-collapse-item>
+            </el-collapse-item> -->
           </el-collapse>
         </el-tab-pane>
         <el-tab-pane :label="$t('overview.tracks')" name="track">
@@ -56,6 +56,18 @@
         <el-tab-pane :label="$t('challenge.allSubmission')" name="allSubmission" v-if="isChallengeHost">
           <all-submission :challengeId="challengeId" :tracks="tracks"></all-submission>
         </el-tab-pane>
+        <el-tab-pane :label="$t('challenge.terms')" name="termsAndConditions">
+          <el-collapse :model-value="['1']" class="oa-collapse">
+            <el-collapse-item :title="$t('overview.term.title')" name="1">
+              <div v-html="detailInfo.terms_and_conditions" class="editor-content-view"></div>
+            </el-collapse-item>
+          </el-collapse>
+        </el-tab-pane>
+        <el-tab-pane :label="$t('challenge.contactUs')" name="contactUs">
+          <!-- <el-collapse-item :title="$t('overview.term.title')" name="2">
+            <div v-html="detailInfo.terms_and_conditions" class="editor-content-view"></div>
+          </el-collapse-item> -->
+      </el-tab-pane>
       </el-tabs>
     </div>
   </div>

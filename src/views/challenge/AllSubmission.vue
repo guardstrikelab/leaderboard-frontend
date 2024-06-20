@@ -3,9 +3,9 @@
     <el-option v-for="item in tracks" :key="item.id" :label="item.name" :value="item.id" />
   </el-select>
   <el-table :data="submissionList" stripe style="width: 100%">
-    <el-table-column fixed type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" />
-    <el-table-column fixed prop="participant_team" :label="$t('submission.team')" width="240"> </el-table-column>
-    <el-table-column prop="created_by" :label="$t('submission.createdBy')" width="130"> </el-table-column>
+    <!-- <el-table-column fixed type="index" label="#" width="50" :index="(i) => (i + 1).toString().padStart(2, '0')" /> -->
+    <el-table-column fixed prop="participant_team" :label="$t('submission.team')" width="20 0"> </el-table-column>
+    <el-table-column prop="created_by" :label="$t('submission.createdBy')" width="100"> </el-table-column>
     <el-table-column prop="status" :label="$t('submission.status')" width="100">
       <template #default="{ row }">
         <span :class="['submis-status', row.status]">{{ row.status.charAt(0).toUpperCase() + row.status.slice(1) }}</span>
@@ -98,15 +98,6 @@ const loadMore = () => {
 
 <style lang="scss" scoped>
 .submis-status {
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    margin-right: 5px;
-    vertical-align: middle;
-  }
   &.finished {
     color: #09b66d;
     &::before {

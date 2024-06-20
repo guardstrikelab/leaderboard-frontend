@@ -2,15 +2,29 @@
   <el-select v-model="selectedTrackId" class="mb16" :placeholder="$t('submission.trackPH')" @change="handleChangeTrack" style="width: 300px">
     <el-option v-for="item in tracks" :key="item.id" :label="item.name" :value="item.id" />
   </el-select>
+  <div class="selected-bar btw mb16" v-if="selectedTrackId">
+    <div>
+      <span class="label mr8">{{ $t('submission.todayRemain') }}:</span>
+      <span class="value">{{ selectedTrack.max_submissions_per_day }}</span>
+    </div>
+    <div>
+      <span class="label mr8">{{ $t('submission.monthRemain') }}:</span>
+      <span class="value">{{ selectedTrack.max_submissions_per_month }}</span>
+    </div>
+    <div>
+      <span class="label mr8">{{ $t('submission.totalRemain') }}:</span>
+      <span class="value">{{ selectedTrack.max_submissions }}</span>
+    </div>
+  </div>
   <el-table :data="submissionList" stripe style="width: 100%">
-    <el-table-column fixed type="index" label="#" width="60" :index="(i) => (i + 1).toString().padStart(2, '0')" />
+    <!-- <el-table-column fixed type="index" label="#" width="60" :index="(i) => (i + 1).toString().padStart(2, '0')" /> -->
     <el-table-column fixed prop="id" :label="$t('submission.submissionId')" width="130" />
     <el-table-column prop="status" :label="$t('submission.status')" width="100">
       <template #default="{ row }">
         <span :class="['submis-status', row.status]">{{ row.status?.charAt(0).toUpperCase() + row.status.slice(1) }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="execution_time" :label="$t('submission.executTime')" width="180" />
+    <!-- <el-table-column prop="execution_time" :label="$t('submission.executTime')" width="180" /> -->
     <el-table-column prop="submission_result_file" :label="$t('submission.resultFile')" width="100">
       <template #default="{ row }">
         <el-link type="primary" v-if="row.submission_result_file" :href="row.submission_result_file" target="_blank">Link</el-link>
@@ -105,15 +119,20 @@ const props = defineProps({
     default: [],
   },
 });
+const selectedTrackId = ref('');
+const selectedTrack = ref({});
 
 onMounted(() => {
+  console.log(props.tracks);
   if (props.tracks.length > 0) {
     selectedTrackId.value = props.tracks[0].id;
+    selectedTrack.value = props.tracks[0];
+    console.log(selectedTrack);
     getSubmissionList();
   }
 });
 
-const selectedTrackId = ref('');
+
 const pager = reactive({
   total: 0,
   pageNum: 1,
@@ -122,6 +141,7 @@ const pager = reactive({
 const submissionList = ref([]);
 const handleChangeTrack = () => {
   pager.pageNum = 1;
+  selectedTrack.value = props.tracks.find(track => track.id == selectedTrackId.value);
   getSubmissionList();
 };
 const getSubmissionList = () => {
@@ -174,16 +194,25 @@ const loadMore = () => {
 </script>
 
 <style lang="scss" scoped>
-.submis-status {
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    margin-right: 5px;
-    vertical-align: middle;
+.selected-bar {
+  height: 48px;
+  background: #2a335e;
+  border-radius: 4px 4px 4px 4px;
+  border: 1px solid #4562e3;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.btw {
+    justify-content: space-between;
   }
+  .value {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+}
+.submis-status {
   &.finished {
     color: #09b66d;
     &::before {

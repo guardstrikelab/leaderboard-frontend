@@ -23,7 +23,7 @@
         {{ row.result[i] }}
       </template>
     </el-table-column>
-    <el-table-column
+    <!-- <el-table-column
       sortable
       prop="submission__submitted_at"
       :label="$t('leaderboard.lastSubmission')"
@@ -32,7 +32,7 @@
           return formatTime(row.submission__submitted_at);
         }
       "
-      width="200" />
+      width="200" /> -->
   </el-table>
 </template>
 

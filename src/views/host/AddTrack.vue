@@ -97,7 +97,7 @@
           <span class="inline-title">{{ $t('addTrack.isRestrictedToSelectOneSubmission') }}</span>
           <el-switch v-model="ruleForm.is_restricted_to_select_one_submission" size="small" />
         </el-form-item>
-        <el-form-item prop="is_partial_submission_evaluation_enabled">
+        <el-form-item class="hidden" prop="is_partial_submission_evaluation_enabled">
           <span class="inline-title">{{ $t('addTrack.isPartialSubmissionEvaluationEnabled') }}</span>
           <el-switch v-model="ruleForm.is_partial_submission_evaluation_enabled" size="small" />
         </el-form-item>
@@ -235,9 +235,9 @@ const submitForm = async (formEl) => {
         end_date: ruleForm.end_date,
         test_annotation_file: ruleForm.test_annotation_file,
         codename: ruleForm.codename,
-        max_submissions_per_day: ruleForm.max_submissions_per_day,
-        max_submissions_per_month: ruleForm.max_submissions_per_month,
-        max_submissions: ruleForm.max_submissions,
+        max_submissions_per_day: parseInt(ruleForm.max_submissions_per_day),
+        max_submissions_per_month: parseInt(ruleForm.max_submissions_per_month),
+        max_submissions: parseInt(ruleForm.max_submissions),
         is_restricted_to_select_one_submission: ruleForm.is_restricted_to_select_one_submission,
         is_partial_submission_evaluation_enabled: ruleForm.is_partial_submission_evaluation_enabled,
         metrics: ruleForm.metrics,
@@ -312,6 +312,9 @@ onMounted(() => {
     .note {
       color: #7f889a;
       font-size: 12px;
+    }
+    .hidden {
+      visibility: hidden;
     }
     ::v-deep {
       .jsoneditor-poweredBy {
