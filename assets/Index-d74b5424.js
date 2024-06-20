@@ -1,0 +1,1 @@
+import{_ as s,aL as t,b as _,c,d as o,a2 as n,p as d,k as p}from"./index-6dffac25.js";const r=e=>(d("data-v-98ae77de"),e=e(),p(),e),i={class:"container"},l=r(()=>o("div",{class:"operation"},null,-1)),u={__name:"Index",setup(e){return(v,m)=>{const a=t("router-view");return _(),c("div",i,[l,o("main",null,[n(a)])])}}},I=s(u,[["__scopeId","data-v-98ae77de"]]);export{I as default};
